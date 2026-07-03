@@ -1,0 +1,22 @@
+{
+  "name": "agentic-solid-conformance",
+  "description": "Language-neutral conformance test vectors for the agentic-accountability specs: the ODRL Agent-Delegation Profile, Agent Authorization Credentials (four-phase verification), and the A2A RDF extension (RDFC-1.0 protocol hashing + the no-silent-downgrade handshake).",
+  "kind": "conformance-vectors",
+  "status": {
+    "phase": "vectors-v1",
+    "summary": "Golden inputs/expected-outputs an independent implementation must reproduce to claim conformance. Vectors are self-describing JSON/Turtle with no @jeswr code dependency; tools/ holds the (local-tooling) generator + consistency checker pinned to the reference implementations."
+  },
+  "rings": {
+    "spec": [
+      "https://w3id.org/jeswr/odrl-delegation",
+      "https://github.com/jeswr/agent-authz-credential-spec",
+      "https://w3id.org/jeswr/a2a-rdf/v1"
+    ],
+    "reference-implementations": [
+      "solid-odrl@18df183 (feat/delegation-profile)",
+      "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups)",
+      "solid-a2a@15ed62a (0.2.0)",
+      "accountable-agent-runtime@0aadd46 (local)"
+    ]
+  }
+}

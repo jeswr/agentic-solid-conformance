@@ -1,0 +1,110 @@
+{
+  "caseCount": 12,
+  "cases": [
+    {
+      "id": "odrl-delegation/valid-1hop",
+      "path": "cases/valid-1hop/case.json"
+    },
+    {
+      "id": "odrl-delegation/valid-2hop",
+      "path": "cases/valid-2hop/case.json"
+    },
+    {
+      "id": "odrl-delegation/over-broad-deny",
+      "path": "cases/over-broad-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/expired-mid-chain-deny",
+      "path": "cases/expired-mid-chain-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/cycle-deny",
+      "path": "cases/cycle-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/depth-exceeded-default-deny",
+      "path": "cases/depth-exceeded-default-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/depth-exceeded-explicit-deny",
+      "path": "cases/depth-exceeded-explicit-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/nextpolicy-mandated-permit",
+      "path": "cases/nextpolicy-mandated-permit/case.json"
+    },
+    {
+      "id": "odrl-delegation/nextpolicy-out-of-scope-deny",
+      "path": "cases/nextpolicy-out-of-scope-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/nextpolicy-violated-deny",
+      "path": "cases/nextpolicy-violated-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/revoked-deny",
+      "path": "cases/revoked-deny/case.json"
+    },
+    {
+      "id": "odrl-delegation/prohibition-laundering-deny",
+      "path": "cases/prohibition-laundering-deny/case.json"
+    }
+  ],
+  "clauseIndex": {
+    "§4.1": [
+      "odrl-delegation/valid-2hop",
+      "odrl-delegation/depth-exceeded-explicit-deny"
+    ],
+    "§4.1 (default budget 1)": [
+      "odrl-delegation/depth-exceeded-default-deny"
+    ],
+    "§4.3": [
+      "odrl-delegation/revoked-deny"
+    ],
+    "§5.1": [
+      "odrl-delegation/valid-1hop"
+    ],
+    "§5.1.2": [
+      "odrl-delegation/cycle-deny"
+    ],
+    "§5.1.3": [
+      "odrl-delegation/revoked-deny"
+    ],
+    "§5.2.1-4": [
+      "odrl-delegation/valid-1hop"
+    ],
+    "§5.2.5": [
+      "odrl-delegation/valid-2hop",
+      "odrl-delegation/depth-exceeded-default-deny",
+      "odrl-delegation/depth-exceeded-explicit-deny"
+    ],
+    "§5.2.6": [
+      "odrl-delegation/nextpolicy-mandated-permit",
+      "odrl-delegation/nextpolicy-out-of-scope-deny",
+      "odrl-delegation/nextpolicy-violated-deny"
+    ],
+    "§6 (leaf)": [
+      "odrl-delegation/valid-1hop"
+    ],
+    "§6.1": [
+      "odrl-delegation/valid-1hop",
+      "odrl-delegation/valid-2hop",
+      "odrl-delegation/over-broad-deny",
+      "odrl-delegation/expired-mid-chain-deny",
+      "odrl-delegation/nextpolicy-out-of-scope-deny"
+    ],
+    "§6.2 (strict prohibitions)": [
+      "odrl-delegation/prohibition-laundering-deny"
+    ],
+    "§7 (expiry)": [
+      "odrl-delegation/expired-mid-chain-deny"
+    ],
+    "§7 (revocation)": [
+      "odrl-delegation/revoked-deny"
+    ]
+  },
+  "description": "evaluate-delegated-chain vectors for the ODRL Agent-Delegation Profile: the delegation decision matrix (valid 1-/2-hop permits; over-broad, expired-mid-chain, cyclic, depth-exceeded, nextPolicy-violated, revoked and prohibition-laundering denies).",
+  "schemaVersion": 1,
+  "spec": "https://w3id.org/jeswr/odrl-delegation",
+  "suite": "odrl-delegation"
+}

@@ -1,0 +1,4 @@
+@prefix odrld: <https://w3id.org/jeswr/odrl-delegation#>.
+
+<https://alice.example/revocations/r1#it> a odrld:Revocation;
+    odrld:revokedPolicy <https://agent-a.example/policies/to-b>.

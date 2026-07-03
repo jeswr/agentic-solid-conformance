@@ -1,0 +1,5 @@
+# roborev config — matches the suite convention (prod-solid-server et al):
+# reviewed by a NON-Anthropic model, every finding down to low severity surfaced.
+agent = "codex"
+model = "gpt-5.5"
+review_min_severity = "low"

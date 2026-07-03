@@ -1,0 +1,26 @@
+{
+  "clauses": [
+    "§6.2 (strict prohibitions)"
+  ],
+  "expected": {
+    "decision": "deny"
+  },
+  "id": "odrl-delegation/prohibition-laundering-deny",
+  "input": {
+    "chain": [
+      "chain-0.ttl",
+      "chain-1.ttl"
+    ],
+    "now": "2026-06-16T12:00:00Z",
+    "request": {
+      "action": "distribute",
+      "agent": "https://agent-b.example/id#it",
+      "target": "https://alice.example/notes/private.ttl"
+    },
+    "revoked": []
+  },
+  "operation": "evaluate-delegated-chain",
+  "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (PROHIBITION LAUNDERING), re-expressed at the evaluateDelegated layer",
+  "spec": "https://w3id.org/jeswr/odrl-delegation",
+  "title": "prohibition laundering: root PERMITS distribute to its own delegate but PROHIBITS it on the asset; the leaf re-grants distribute → deny"
+}

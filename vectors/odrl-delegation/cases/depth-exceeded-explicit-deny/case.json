@@ -1,0 +1,28 @@
+{
+  "clauses": [
+    "§4.1",
+    "§5.2.5"
+  ],
+  "expected": {
+    "decision": "deny"
+  },
+  "id": "odrl-delegation/depth-exceeded-explicit-deny",
+  "input": {
+    "chain": [
+      "chain-0.ttl",
+      "chain-1.ttl",
+      "chain-2.ttl"
+    ],
+    "now": "2026-06-16T12:00:00Z",
+    "request": {
+      "action": "read",
+      "agent": "https://agent-c.example/id#it",
+      "target": "https://alice.example/notes/private.ttl"
+    },
+    "revoked": []
+  },
+  "operation": "evaluate-delegated-chain",
+  "source": "solid-odrl@18df183 test/characterization.test.ts (delegation decision matrix)",
+  "spec": "https://w3id.org/jeswr/odrl-delegation",
+  "title": "depth exceeded: 2 hops under an explicit delegationDepth lteq 1 → deny"
+}

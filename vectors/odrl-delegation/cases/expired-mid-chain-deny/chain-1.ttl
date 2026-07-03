@@ -1,0 +1,27 @@
+@prefix odrl: <http://www.w3.org/ns/odrl/2/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix dpv: <https://w3id.org/dpv#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<https://agent-a.example/policies/to-b> a odrl:Agreement;
+    odrl:uid <https://agent-a.example/policies/to-b>;
+    odrl:profile <https://w3id.org/jeswr/odrl-delegation>;
+    odrl:assigner <https://agent-a.example/id#it>;
+    odrl:assignee <https://agent-b.example/id#it>;
+    <https://w3id.org/jeswr/odrl-delegation#delegatedUnder> <https://alice.example/policies/root>;
+    odrl:permission _:n3-15, _:n3-17.
+_:n3-15 odrl:assigner <https://agent-a.example/id#it>;
+    odrl:assignee <https://agent-b.example/id#it>;
+    odrl:action odrl:read;
+    odrl:target <https://alice.example/notes/private.ttl>;
+    odrl:constraint _:n3-16.
+_:n3-16 odrl:leftOperand odrl:dateTime;
+    odrl:operator odrl:lteq;
+    odrl:rightOperand "2026-01-01T00:00:00Z"^^xsd:dateTime.
+_:n3-17 odrl:assigner <https://agent-a.example/id#it>;
+    odrl:assignee <https://agent-b.example/id#it>;
+    odrl:action odrl:grantUse;
+    odrl:target <https://alice.example/notes/private.ttl>.

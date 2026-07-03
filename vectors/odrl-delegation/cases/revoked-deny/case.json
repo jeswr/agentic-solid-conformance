@@ -1,0 +1,31 @@
+{
+  "clauses": [
+    "§4.3",
+    "§5.1.3",
+    "§7 (revocation)"
+  ],
+  "expected": {
+    "decision": "deny"
+  },
+  "id": "odrl-delegation/revoked-deny",
+  "input": {
+    "chain": [
+      "chain-0.ttl",
+      "chain-1.ttl"
+    ],
+    "now": "2026-06-16T12:00:00Z",
+    "request": {
+      "action": "read",
+      "agent": "https://agent-b.example/id#it",
+      "target": "https://alice.example/notes/private.ttl"
+    },
+    "revoked": [
+      "https://agent-a.example/policies/to-b"
+    ]
+  },
+  "note": "revocation.ttl is the published odrld:Revocation statement; `revoked` is exactly the set a caller derives from its odrld:revokedPolicy objects (profile §7 — the evaluator itself performs no I/O).",
+  "operation": "evaluate-delegated-chain",
+  "source": "solid-odrl@18df183 test/characterization.test.ts (delegation decision matrix)",
+  "spec": "https://w3id.org/jeswr/odrl-delegation",
+  "title": "revoked hop (odrld:Revocation → the revoked set) → deny"
+}

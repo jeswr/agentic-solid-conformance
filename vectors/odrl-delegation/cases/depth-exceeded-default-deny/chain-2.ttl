@@ -1,0 +1,19 @@
+@prefix odrl: <http://www.w3.org/ns/odrl/2/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix dpv: <https://w3id.org/dpv#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<https://agent-b.example/policies/to-c> a odrl:Agreement;
+    odrl:uid <https://agent-b.example/policies/to-c>;
+    odrl:profile <https://w3id.org/jeswr/odrl-delegation>;
+    odrl:assigner <https://agent-b.example/id#it>;
+    odrl:assignee <https://agent-c.example/id#it>;
+    <https://w3id.org/jeswr/odrl-delegation#delegatedUnder> <https://agent-a.example/policies/to-b>;
+    odrl:permission _:n3-28.
+_:n3-28 odrl:assigner <https://agent-b.example/id#it>;
+    odrl:assignee <https://agent-c.example/id#it>;
+    odrl:action odrl:read;
+    odrl:target <https://alice.example/notes/private.ttl>.

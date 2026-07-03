@@ -1,0 +1,17 @@
+{
+  "name": "@jeswr/agentic-solid-conformance-tools",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Generator + consistency checker for the agentic-solid-conformance vectors. LOCAL TOOLING pinned to the reference implementations — the vectors themselves are self-describing and never require this package.",
+  "type": "module",
+  "scripts": {
+    "generate": "node generate/odrl-delegation.mjs && node generate/aac-chain.mjs && node generate/aac-status.mjs && node generate/a2a.mjs",
+    "test": "node check/run-all.mjs"
+  },
+  "dependencies": {
+    "@jeswr/accountable-agent-runtime": "file:../../accountable-agent-runtime",
+    "@jeswr/solid-a2a": "file:../../solid-a2a",
+    "@jeswr/solid-odrl": "git+https://github.com/jeswr/solid-odrl.git#18df183564e86d144da1ee874706750f441d0c70",
+    "@jeswr/solid-vc": "git+https://github.com/jeswr/solid-vc.git#d6b4e3402041089f11b55c1b5ce42fc1c2f47c8a"
+  }
+}
