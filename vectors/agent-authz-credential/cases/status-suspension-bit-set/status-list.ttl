@@ -11,7 +11,7 @@
 
 <https://status-issuer.example/status/list-1> a cred:VerifiableCredential, svc:BitstringStatusListCredential;
     cred:issuer <https://status-issuer.example/org#id>;
-    cred:validFrom "2026-07-03T08:53:42.987Z"^^xsd:dateTime;
+    cred:validFrom "2026-07-03T09:08:12.813Z"^^xsd:dateTime;
     cred:credentialSubject <https://status-issuer.example/status/list-1#list>.
 <https://status-issuer.example/status/list-1#list> <https://www.w3.org/ns/credentials/status#statusPurpose> "suspension";
     <https://www.w3.org/ns/credentials/status#encodedList> "uH4sIAAAAAAAAE-3BMQEAAAzDoEiZf5WT0Qeo6gIAAAAAAAAAAAAAAAAAAACGHjOa7TAAQAAA".
@@ -20,5 +20,5 @@ _:n3-4 a sec:DataIntegrityProof;
     sec:cryptosuite "eddsa-rdfc-2022";
     sec:verificationMethod <https://status-issuer.example/keys#k1>;
     sec:proofPurpose sec:assertionMethod;
-    dcterms:created "2026-07-03T08:53:42.987Z"^^xsd:dateTime;
-    sec:proofValue "zX4UVsfqZZfdETFDUQzcsLFGj2wYZshuFaJ3ETjQ4ipSWWELfokEZYFUMHoFjZ8TgtLK49St1ZwLQDXrHe9HcncD".
+    dcterms:created "2026-07-03T09:08:12.813Z"^^xsd:dateTime;
+    sec:proofValue "z4aJyfPhS9xuzsFEZtdS1DGGWsrKqeRboPSuVNDXacxREV5C8qNi6tytTCPNoDRz2NABfmHgnJXwmdQ8rRMrdjKh3".

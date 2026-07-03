@@ -54,7 +54,8 @@ const DOMAIN = "https://verifier.example/authorize";
 const issuerKey = await generateKeyPairForSuite(ISSUER_VM, "Ed25519");
 const presenterKey = await generateKeyPairForSuite(PRESENTER_VM, "Ed25519");
 
-// keyring controller documents (public halves only)
+// keyring controller documents (public halves only) — written AFTER verification
+const keyringDocs = [];
 for (const [name, controller, vm, key] of [
   ["status-issuer", ISSUER, ISSUER_VM, issuerKey],
   ["presenter", PRESENTER, PRESENTER_VM, presenterKey],
@@ -63,9 +64,9 @@ for (const [name, controller, vm, key] of [
   delete jwk.key_ops;
   delete jwk.ext;
   const raw = Buffer.from(jwk.x, "base64url");
-  writeFixture(
-    join(REPO_ROOT, "vectors", "agent-authz-credential", "keyring", `${name}.json`),
-    stableJson({
+  keyringDocs.push({
+    name,
+    body: stableJson({
       "@context": ["https://www.w3.org/ns/cid/v1"],
       id: controller,
       verificationMethod: [
@@ -79,7 +80,7 @@ for (const [name, controller, vm, key] of [
       ],
       assertionMethod: [vm],
     }),
-  );
+  });
 }
 
 const resolveKey = (vm) =>
@@ -287,8 +288,7 @@ for (const c of STATUS_CASES) {
     source: SOURCE_STATUS,
     ...(c.note !== undefined && { note: c.note }),
   };
-  const rel = writeCase("agent-authz-credential", c.id, caseJson, docs);
-  newEntries.push({ caseJson, rel });
+  newEntries.push({ caseId: c.id, caseJson, docs });
   console.log(`agent-authz-credential/${c.id}: ${JSON.stringify(actual)}`);
 }
 
@@ -321,23 +321,32 @@ for (const c of VP_CASES) {
     expected: c.expected,
     source: SOURCE_VP,
   };
-  const rel = writeCase("agent-authz-credential", c.id, caseJson, {
-    "presentation.vp.json": stableJson(c.vp),
+  newEntries.push({
+    caseId: c.id,
+    caseJson,
+    docs: { "presentation.vp.json": stableJson(c.vp) },
   });
-  newEntries.push({ caseJson, rel });
   console.log(`agent-authz-credential/${c.id}: ${JSON.stringify(actual)}`);
 }
 
+// Verify-all-first, THEN write (keyring included) — no partial fixtures on failure.
 if (failures > 0) {
-  console.error(`${failures} mismatches — manifest NOT updated`);
+  console.error(`${failures} mismatches — vectors NOT written`);
   process.exit(1);
+}
+for (const { name, body } of keyringDocs) {
+  writeFixture(
+    join(REPO_ROOT, "vectors", "agent-authz-credential", "keyring", `${name}.json`),
+    body,
+  );
 }
 
 // --- merge into the suite manifest (aac-chain.mjs wrote the chain cases) --------
 const manifestPath = join(REPO_ROOT, "vectors", "agent-authz-credential", "manifest.json");
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 const existingIds = new Set(manifest.cases.map((c) => c.id));
-for (const { caseJson, rel } of newEntries) {
+for (const { caseId, caseJson, docs } of newEntries) {
+  const rel = writeCase("agent-authz-credential", caseId, caseJson, docs);
   if (existingIds.has(caseJson.id)) continue;
   manifest.cases.push({ id: caseJson.id, path: rel });
   for (const clause of caseJson.clauses) {

@@ -49,6 +49,7 @@ const ACTORS = [
   { name: "agent-a", controller: CAST.agentA, vm: CAST.agentAKeyVm },
   { name: "institute", controller: CAST.inst, vm: CAST.instKeyVm },
 ];
+const keyringDocs = [];
 for (const a of ACTORS) {
   const key = base.keyRing.resolveKey(a.vm);
   if (key === undefined) throw new Error(`no key for ${a.vm}`);
@@ -58,9 +59,9 @@ for (const a of ACTORS) {
   // Multikey form: multicodec ed25519-pub (0xed 0x01) + the 32 raw public bytes.
   const raw = Buffer.from(jwk.x, "base64url");
   const publicKeyMultibase = base58btcEncode(new Uint8Array([0xed, 0x01, ...raw]));
-  writeFixture(
-    join(REPO_ROOT, "vectors", "agent-authz-credential", "keyring", `${a.name}.json`),
-    stableJson({
+  keyringDocs.push({
+    name: a.name,
+    body: stableJson({
       "@context": ["https://www.w3.org/ns/cid/v1"],
       id: a.controller,
       verificationMethod: [
@@ -74,7 +75,7 @@ for (const a of ACTORS) {
       ],
       assertionMethod: [a.vm],
     }),
-  );
+  });
 }
 
 // --- shared document bodies ---------------------------------------------------
@@ -247,13 +248,19 @@ const CASES = [
     title: "REVOKED: a revoked chain hop (odrld:Revocation direction) → Phase C REVOKED",
     clauses: ["#verification (Phase C)", "#revocation-verification (rule 2: statement → policy)"],
     docs: { ...PRIMARY_DOCS, ...ACTOR_DOCS, "revocation.ttl": REVOCATION_DOC },
-    input: { ...baseInput(), revoked: [CAST.agreementId] },
+    input: {
+      ...baseInput(),
+      revoked: [],
+      revocationDocuments: ["revocation.ttl"],
+    },
+    evalRevoked: [CAST.agreementId], // what the reference verifier receives (derived from the doc)
     expected: { authorized: false, phase: "C", code: "REVOKED" },
     note:
-      "revocation.ttl is the published odrld:Revocation statement; `revoked` is the set a " +
-      "caller derives from its odrld:revokedPolicy objects. The credential's OWN status list " +
-      "is clean — a policy-layer revocation alone MUST deny (the union rule; the Bitstring " +
-      "direction is pinned by the verify-credential-status cases).",
+      "The revoked set is DERIVED: parse revocation.ttl and take every odrld:revokedPolicy " +
+      "object (an implementation that cannot parse the statement fails this case). The " +
+      "credential's OWN status list is clean — a policy-layer revocation alone MUST deny " +
+      "(the union rule; the Bitstring direction is pinned by the verify-credential-status " +
+      "cases).",
   },
   {
     id: "status-unreachable",
@@ -378,6 +385,7 @@ const policyByFile = new Map([
 ]);
 
 let failures = 0;
+const pending = [];
 for (const c of CASES) {
   const input = c.input;
   const r = await verifyAgentAuthority(chainFromDocs(c.docs, input.primaryChain), {
@@ -386,7 +394,7 @@ for (const c of CASES) {
     now: new Date(input.now),
     resolveKey: base.keyRing.resolveKey,
     isControlledBy: sameOriginController,
-    revoked: input.revoked,
+    revoked: c.evalRevoked ?? input.revoked,
     ...(input.statusUnreachable !== undefined && { statusUnreachable: input.statusUnreachable }),
     ...(input.maxChainLength !== undefined && { maxChainLength: input.maxChainLength }),
     actor: input.actor,
@@ -418,6 +426,9 @@ for (const c of CASES) {
       rootPrincipal: input.rootPrincipal,
       now: input.now,
       revoked: input.revoked,
+      ...(input.revocationDocuments !== undefined && {
+        revocationDocuments: input.revocationDocuments,
+      }),
       ...(input.statusUnreachable !== undefined && { statusUnreachable: input.statusUnreachable }),
       ...(input.maxChainLength !== undefined && { maxChainLength: input.maxChainLength }),
       ...(input.actor !== undefined && { actor: input.actor }),
@@ -427,14 +438,23 @@ for (const c of CASES) {
     source: SOURCE,
     ...(c.note !== undefined && { note: c.note }),
   };
-  const rel = writeCase("agent-authz-credential", c.id, caseJson, c.docs);
-  manifest.add(caseJson, rel);
+  pending.push({ caseId: c.id, caseJson, docs: c.docs });
   console.log(`agent-authz-credential/${c.id}: ${JSON.stringify(actual)}`);
 }
 
+// Verify-all-first, THEN write: a mismatch must never leave partial fixtures.
 if (failures > 0) {
   console.error(`${failures} verdict mismatches vs the golden matrix — vectors NOT written`);
   process.exit(1);
+}
+for (const { name, body } of keyringDocs) {
+  writeFixture(
+    join(REPO_ROOT, "vectors", "agent-authz-credential", "keyring", `${name}.json`),
+    body,
+  );
+}
+for (const { caseId, caseJson, docs } of pending) {
+  manifest.add(caseJson, writeCase("agent-authz-credential", caseId, caseJson, docs));
 }
 manifest.write();
 console.log(`agent-authz-credential (chain): ${CASES.length} cases written`);

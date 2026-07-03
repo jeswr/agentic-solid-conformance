@@ -208,12 +208,14 @@ const CASES = [
     clauses: ["§4.3", "§5.1.3", "§7 (revocation)"],
     chain: [rootPolicy(), hop1Policy()],
     request: READ_B,
-    revoked: [HOP1_ID],
+    revoked: [HOP1_ID], // what the reference evaluator receives (derived from the doc)
+    revocationDocuments: ["revocation.ttl"],
     extraDocs: { "revocation.ttl": REVOCATION_DOC },
     note:
-      "revocation.ttl is the published odrld:Revocation statement; `revoked` is exactly the " +
-      "set a caller derives from its odrld:revokedPolicy objects (profile §7 — the evaluator " +
-      "itself performs no I/O).",
+      "The revoked set is DERIVED: parse revocation.ttl and take every odrld:revokedPolicy " +
+      "object (profile §4.3/§7 — the evaluator itself performs no I/O; the caller assembles " +
+      "the set from published odrld:Revocation statements). An implementation that cannot " +
+      "parse the statement fails this case.",
   },
   {
     id: "use-does-not-grant-delegation-deny",
@@ -257,6 +259,7 @@ const manifest = new SuiteManifest({
 });
 
 let failures = 0;
+const pending = [];
 for (const c of CASES) {
   // 1. Serialize each DISTINCT policy of the chain to Turtle (the normative RDF form).
   const files = new Map(); // filename → { turtle, policyId }
@@ -306,23 +309,33 @@ for (const c of CASES) {
       chain: chainRefs,
       request: c.request,
       now: NOW,
-      revoked: c.revoked ?? [],
+      // When the case ships odrld:Revocation documents, the revoked set is DERIVED
+      // from them (the checker parses odrld:revokedPolicy); the literal `revoked`
+      // array then stays empty so implementations must exercise the parse.
+      revoked: c.revocationDocuments !== undefined ? [] : (c.revoked ?? []),
+      ...(c.revocationDocuments !== undefined && {
+        revocationDocuments: c.revocationDocuments,
+      }),
     },
     expected: { decision: result.decision },
     source: c.source ?? SOURCE_MATRIX,
     ...(c.note !== undefined && { note: c.note }),
   };
-  const rel = writeCase("odrl-delegation", c.id, caseJson, {
-    ...Object.fromEntries(files),
-    ...(c.extraDocs ?? {}),
+  pending.push({
+    caseId: c.id,
+    caseJson,
+    docs: { ...Object.fromEntries(files), ...(c.extraDocs ?? {}) },
   });
-  manifest.add(caseJson, rel);
   console.log(`odrl-delegation/${c.id}: ${result.decision}`);
 }
 
+// Verify-all-first, THEN write: a mismatch must never leave partial fixtures.
 if (failures > 0) {
-  console.error(`${failures} serialization mismatches — vectors NOT trustworthy`);
+  console.error(`${failures} serialization mismatches — vectors NOT written`);
   process.exit(1);
+}
+for (const { caseId, caseJson, docs } of pending) {
+  manifest.add(caseJson, writeCase("odrl-delegation", caseId, caseJson, docs));
 }
 manifest.write();
 console.log(`odrl-delegation: ${CASES.length} cases written`);

@@ -6,13 +6,13 @@
     "https://w3id.org/jeswr/solid-vc#target": "https://alice.solid.example/data/records.ttl",
     "id": "https://agent-a.example/id#it"
   },
-  "id": "urn:uuid:aa5cab6f-5a4f-4675-b083-1afe8a053885",
+  "id": "urn:uuid:8da1968e-cd22-4941-866b-c87dd534e603",
   "issuer": "https://agent-a.example/id#it",
   "proof": {
-    "created": "2026-07-03T08:49:55.502Z",
+    "created": "2026-07-03T09:08:12.630Z",
     "cryptosuite": "eddsa-rdfc-2022",
     "proofPurpose": "assertionMethod",
-    "proofValue": "z515Hdif5Ms9AX428pazQou9hUnDCrqeuwJZCGXUrefrxw3TT2yHLb3tKENyG7WTdg35NX6xKqsk6UK7bdTf9f5bz",
+    "proofValue": "z4qHjega1iqaXdJqGbqjwLAqGMTEFa3WGARLYWssNZm1YXGEpyixPap4BWfh3Dd26TFE4nJp3bn1P1wMnupmsg69z",
     "type": "DataIntegrityProof",
     "verificationMethod": "https://agent-a.example/keys#k1"
   },

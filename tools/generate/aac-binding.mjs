@@ -36,15 +36,15 @@ const TAMPERED_BODY = `${POLICY_BODY}# swapped after signing\n`;
 
 const key = await generateKeyPairForSuite(ISSUER_VM, "Ed25519");
 
-// keyring controller doc (the binding fixtures are signature-valid credentials too)
+// keyring controller doc (the binding fixtures are signature-valid credentials too);
+// written AFTER verification so a mismatch never leaves partial fixtures.
+let keyringBody;
 {
   const jwk = await subtle.exportKey("jwk", key.publicKey);
   delete jwk.key_ops;
   delete jwk.ext;
   const raw = Buffer.from(jwk.x, "base64url");
-  writeFixture(
-    join(REPO_ROOT, "vectors", "agent-authz-credential", "keyring", "binding-issuer.json"),
-    stableJson({
+  keyringBody = stableJson({
       "@context": ["https://www.w3.org/ns/cid/v1"],
       id: ISSUER,
       verificationMethod: [
@@ -57,8 +57,7 @@ const key = await generateKeyPairForSuite(ISSUER_VM, "Ed25519");
         },
       ],
       assertionMethod: [ISSUER_VM],
-    }),
-  );
+    });
 }
 
 const BASE = { principal: ISSUER, agent: AGENT, action: "read" };
@@ -174,23 +173,29 @@ for (const c of CASES) {
     expected: c.expected,
     source: SOURCE,
   };
-  const rel = writeCase("agent-authz-credential", c.id, caseJson, {
-    "credential.vc.json": stableJson(c.vc),
-    ...(c.docs ?? {}),
+  newEntries.push({
+    caseId: c.id,
+    caseJson,
+    docs: { "credential.vc.json": stableJson(c.vc), ...(c.docs ?? {}) },
   });
-  newEntries.push({ caseJson, rel });
   console.log(`agent-authz-credential/${c.id}: ${JSON.stringify(actual)}`);
 }
 
+// Verify-all-first, THEN write (keyring included) — no partial fixtures on failure.
 if (failures > 0) {
-  console.error(`${failures} mismatches — manifest NOT updated`);
+  console.error(`${failures} mismatches — vectors NOT written`);
   process.exit(1);
 }
+writeFixture(
+  join(REPO_ROOT, "vectors", "agent-authz-credential", "keyring", "binding-issuer.json"),
+  keyringBody,
+);
 
 const manifestPath = join(REPO_ROOT, "vectors", "agent-authz-credential", "manifest.json");
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 const existingIds = new Set(manifest.cases.map((c) => c.id));
-for (const { caseJson, rel } of newEntries) {
+for (const { caseId, caseJson, docs } of newEntries) {
+  const rel = writeCase("agent-authz-credential", caseId, caseJson, docs);
   if (existingIds.has(caseJson.id)) continue;
   manifest.cases.push({ id: caseJson.id, path: rel });
   for (const clause of caseJson.clauses) {

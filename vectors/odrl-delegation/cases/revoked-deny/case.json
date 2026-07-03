@@ -19,11 +19,12 @@
       "agent": "https://agent-b.example/id#it",
       "target": "https://alice.example/notes/private.ttl"
     },
-    "revoked": [
-      "https://agent-a.example/policies/to-b"
-    ]
+    "revocationDocuments": [
+      "revocation.ttl"
+    ],
+    "revoked": []
   },
-  "note": "revocation.ttl is the published odrld:Revocation statement; `revoked` is exactly the set a caller derives from its odrld:revokedPolicy objects (profile §7 — the evaluator itself performs no I/O).",
+  "note": "The revoked set is DERIVED: parse revocation.ttl and take every odrld:revokedPolicy object (profile §4.3/§7 — the evaluator itself performs no I/O; the caller assembles the set from published odrld:Revocation statements). An implementation that cannot parse the statement fails this case.",
   "operation": "evaluate-delegated-chain",
   "source": "solid-odrl@18df183 test/characterization.test.ts (delegation decision matrix)",
   "spec": "https://w3id.org/jeswr/odrl-delegation",

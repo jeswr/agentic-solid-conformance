@@ -38,12 +38,13 @@
       },
       "target": "https://alice.solid.example/data/records.ttl"
     },
-    "revoked": [
-      "https://alice.solid.example/agents/engagements/e1/agreement.ttl#policy"
+    "revocationDocuments": [
+      "revocation.ttl"
     ],
+    "revoked": [],
     "rootPrincipal": "https://alice.solid.example/profile/card#me"
   },
-  "note": "revocation.ttl is the published odrld:Revocation statement; `revoked` is the set a caller derives from its odrld:revokedPolicy objects. The credential's OWN status list is clean — a policy-layer revocation alone MUST deny (the union rule; the Bitstring direction is pinned by the verify-credential-status cases).",
+  "note": "The revoked set is DERIVED: parse revocation.ttl and take every odrld:revokedPolicy object (an implementation that cannot parse the statement fails this case). The credential's OWN status list is clean — a policy-layer revocation alone MUST deny (the union rule; the Bitstring direction is pinned by the verify-credential-status cases).",
   "operation": "verify-agent-authority",
   "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",

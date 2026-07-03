@@ -11,7 +11,7 @@
 
 <https://status-issuer.example/status/list-1> a cred:VerifiableCredential, svc:BitstringStatusListCredential;
     cred:issuer <https://status-issuer.example/org#id>;
-    cred:validFrom "2026-07-03T08:53:42.986Z"^^xsd:dateTime;
+    cred:validFrom "2026-07-03T09:08:12.811Z"^^xsd:dateTime;
     cred:credentialSubject <https://status-issuer.example/status/list-1#list>.
 <https://status-issuer.example/status/list-1#list> <https://www.w3.org/ns/credentials/status#statusPurpose> "revocation";
     <https://www.w3.org/ns/credentials/status#encodedList> "uH4sIAAAAAAAAE-3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAIC3AYbSVKsAQAAA".
@@ -20,5 +20,5 @@ _:n3-2 a sec:DataIntegrityProof;
     sec:cryptosuite "eddsa-rdfc-2022";
     sec:verificationMethod <https://status-issuer.example/keys#k1>;
     sec:proofPurpose sec:assertionMethod;
-    dcterms:created "2026-07-03T08:53:42.986Z"^^xsd:dateTime;
-    sec:proofValue "z5o3t85i66kpmURdpMQBfCznGrGPLCUo2iFunjL7GU8AceMgCP9eX5iBC3fcEVDHyVGnCD3w5vVssVj29JL2Bxdyw".
+    dcterms:created "2026-07-03T09:08:12.811Z"^^xsd:dateTime;
+    sec:proofValue "z2HZ2NhodaibgAxLaXSabXN1gnkhbMqvVSRpQKdwwCofsML9GE6bGM3s1mqnry4DG2AcSDbRAY9oDCoNSUDPVnNJt".

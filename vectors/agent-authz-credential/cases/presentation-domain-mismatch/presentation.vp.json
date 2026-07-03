@@ -1,13 +1,13 @@
 {
   "holder": "https://presenter.example/agents/p#it",
-  "id": "urn:uuid:c8fe55f1-b74b-43ea-acd8-9a77cb8411f4",
+  "id": "urn:uuid:06324ad8-24fe-4413-8ec5-7c4b0ebc3b9a",
   "proof": {
     "challenge": "c-8f21-issued-by-verifier",
-    "created": "2026-07-03T08:53:42.989Z",
+    "created": "2026-07-03T09:08:12.815Z",
     "cryptosuite": "eddsa-rdfc-2022",
     "domain": "https://evil.example",
     "proofPurpose": "authentication",
-    "proofValue": "zJgsdDXizH6WXh2JYT4GGnk2U1iwrxEEUaXVKeQNc1gEBYdtAAzcNJhPKtZDq3df9Z3KFcTFXa4DAjFBMw6VYpvy",
+    "proofValue": "z4tBUqqTq4S8Yi2HRRUrksgQr6sGMZDcmUm2ZCV7bYzKsAFo2U7TsrFZMgtKFQ65dZueCvTpBveWys1sX63G8dgzr",
     "type": "DataIntegrityProof",
     "verificationMethod": "https://presenter.example/keys#k1"
   },
@@ -19,20 +19,20 @@
         "https://w3id.org/jeswr/solid-vc#target": "https://alice.solid.example/data/records.ttl",
         "id": "https://status-issuer.example/org#id"
       },
-      "id": "urn:uuid:608917e8-0e51-4756-ab44-57eaf0cfe85f",
+      "id": "urn:uuid:77139bc5-c1b2-4d6f-9072-68d263e413bd",
       "issuer": "https://status-issuer.example/org#id",
       "proof": {
-        "created": "2026-07-03T08:53:42.988Z",
+        "created": "2026-07-03T09:08:12.814Z",
         "cryptosuite": "eddsa-rdfc-2022",
         "proofPurpose": "assertionMethod",
-        "proofValue": "zXuR5c7kvLX99kKkVupBVvqnDLQrsTBkLSuFjZgHSyDR7mf1spqihpABE1EamccQH8Bsg3ry2ftGuT7s5pxWi1pH",
+        "proofValue": "z2JAtS7KqUtaJim866SAAodap6yTAtkDwsPeqEmuHztcBk1pUY53ua78FuuuSDaQWicfydTKYyAMNytAKaCFnuPEA",
         "type": "DataIntegrityProof",
         "verificationMethod": "https://status-issuer.example/keys#k1"
       },
       "type": [
         "AgentAuthorizationCredential"
       ],
-      "validFrom": "2026-07-03T08:53:42.988Z"
+      "validFrom": "2026-07-03T09:08:12.814Z"
     }
   ]
 }

@@ -14,9 +14,9 @@
         "alg": "Ed25519",
         "crv": "Ed25519",
         "kty": "OKP",
-        "x": "OMoM0zH6nuOEgCcDQI_31cLPF762Z8vvFOV9MLQEFJg"
+        "x": "tn5FVe1hvXv9ZfHrKiaAdWCbyaJT4AyeJ9p23csuG6w"
       },
-      "publicKeyMultibase": "z6MkiGwa435zszsCtMfqB7RrbMvRhsZfcKVNFspgvwReM4Mu",
+      "publicKeyMultibase": "z6MkrjdvNecvPFByW2ooC1ieqb6nkkD9kRa5Qt46G96AxHCf",
       "type": "Multikey"
     }
   ]

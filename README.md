@@ -103,7 +103,7 @@ one field.)
 ### 1. `evaluate-delegated-chain` — ODRL Agent-Delegation Profile §5–§7
 
 ```
-evaluate-delegated-chain(chain, request, now, revoked) → { decision }
+evaluate-delegated-chain(chain, request, now, revoked, revocationDocuments?) → { decision }
 ```
 
 - `chain`: ordered list (root first) of ODRL policy documents (Turtle, one policy per file;
@@ -113,9 +113,11 @@ evaluate-delegated-chain(chain, request, now, revoked) → { decision }
   constraints; the evaluator MUST inject the true remaining depth for
   `odrld:delegationDepth`, ignoring caller-asserted values — profile §4.1).
 - `now`: the single evaluation instant (ISO 8601).
-- `revoked`: policy IRIs withdrawn per profile §7. Where a case ships an
-  `odrld:Revocation` document, `revoked` is exactly the set a caller derives from it
-  (`odrld:revokedPolicy` objects).
+- `revoked` + `revocationDocuments`: the effective revoked set (profile §7) is the
+  UNION of the literal `revoked` IRIs and, for every `odrld:Revocation` document listed
+  in `revocationDocuments`, its `odrld:revokedPolicy` objects (profile §4.3). An
+  implementation must actually PARSE the revocation statements — the cases that ship one
+  keep the literal array empty.
 - `expected.decision`: `"permit"` or `"deny"` — two-valued, fail-closed (profile §5:
   there is **no** `notApplicable` for a delegated chain).
 
@@ -131,7 +133,7 @@ verify-agent-authority(primaryChain, options) → { authorized, phase, code? }
 - `primaryChain`: `{ credentials: [vc.json …], policies: [policy.ttl …] }` — root first;
   credential *i* binds policy *i*.
 - `options`:
-  - `request`, `now`, `revoked` — as in operation 1;
+  - `request`, `now`, `revoked`, `revocationDocuments` — as in operation 1;
   - `rootPrincipal`: the trusted root principal the root credential's issuer must equal
     (Phase B);
   - `statusUnreachable` (boolean, default false): models "the status source could not be
@@ -183,8 +185,15 @@ The stolen-presentation replay control: a Verifiable Presentation is bound to a
 `challenge`/`domain`; verification with the wrong expectation MUST fail.
 
 ```
-verify-presentation-replay(presentation, challenge, domain, now) → { verified }
+verify-presentation-replay(presentation, challenge, domain, now) → { verified, codes }
 ```
+
+- `presentation`: a signed VP (JSON-LD) whose authentication-purpose proof binds a
+  challenge and domain; the holder's key resolves via the keyring.
+- `challenge` / `domain`: what THIS verifier expects; a proof bound to anything else is a
+  replay and MUST fail.
+- `expected.verified`: boolean; `expected.codes`: the deny codes (`CHALLENGE_MISMATCH`,
+  `DOMAIN_MISMATCH`) — empty when verified.
 
 ### 5. `resolve-bound-policy` — AAC §Policy-content binding / §Verification step 1
 

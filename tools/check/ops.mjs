@@ -26,6 +26,27 @@ import { resolveBoundPolicy, verifyCredential, verifyPresentation } from "@jeswr
 async function quadsOf(caseDir, name) {
   return [...(await parseRdf(doc(caseDir, name), "text/turtle", {}))];
 }
+
+const ODRLD_REVOKED_POLICY = "https://w3id.org/jeswr/odrl-delegation#revokedPolicy";
+
+/**
+ * The effective revoked set: the case's literal `revoked` IRIs UNIONED with the
+ * `odrld:revokedPolicy` objects of every shipped `odrld:Revocation` document
+ * (`revocationDocuments`) — so the vectors exercise revocation-STATEMENT parsing,
+ * not just a pre-derived array (ODRL-delegation §4.3/§7; AAC
+ * #revocation-verification rule 2).
+ */
+async function effectiveRevoked(input, caseDir) {
+  const revoked = new Set(input.revoked ?? []);
+  for (const ref of input.revocationDocuments ?? []) {
+    for (const quad of await quadsOf(caseDir, ref)) {
+      if (quad.predicate.value === ODRLD_REVOKED_POLICY && quad.object.termType === "NamedNode") {
+        revoked.add(quad.object.value);
+      }
+    }
+  }
+  return [...revoked];
+}
 import { REPO_ROOT } from "../lib/emit.mjs";
 
 /** Read a case-relative document. */
@@ -85,7 +106,7 @@ export const ops = {
     }
     const result = evaluateDelegated(chain, input.request, {
       now: new Date(input.now),
-      revoked: input.revoked,
+      revoked: await effectiveRevoked(input, caseDir),
     });
     return { decision: result.decision };
   },
@@ -102,7 +123,7 @@ export const ops = {
       now: new Date(input.now),
       resolveKey: keyring.resolveKey,
       isControlledBy: keyring.isControlledBy,
-      revoked: input.revoked,
+      revoked: await effectiveRevoked(input, caseDir),
       ...(input.statusUnreachable !== undefined && {
         statusUnreachable: input.statusUnreachable,
       }),
