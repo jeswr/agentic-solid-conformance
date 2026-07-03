@@ -1,0 +1,25 @@
+{
+  "clauses": [
+    "#policy-binding (retrieval failure)",
+    "#verification (step 1)"
+  ],
+  "expected": {
+    "codes": [
+      "POLICY_INTEGRITY"
+    ],
+    "ok": false
+  },
+  "id": "agent-authz-credential/binding-unreachable-reject",
+  "input": {
+    "credential": "credential.vc.json",
+    "documents": {
+      "https://binding-issuer.example/policies/p1.ttl": {
+        "status": 404
+      }
+    }
+  },
+  "operation": "resolve-bound-policy",
+  "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/policy-binding.test.ts",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "policy binding: an unreachable policy document (404) MUST be rejected (fail closed)"
+}

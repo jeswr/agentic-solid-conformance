@@ -1,0 +1,20 @@
+{
+  "clauses": [
+    "#policy-binding (embedded)",
+    "#verification (step 1)"
+  ],
+  "expected": {
+    "codes": [],
+    "form": "embedded",
+    "ok": true
+  },
+  "id": "agent-authz-credential/binding-embedded-accept",
+  "input": {
+    "credential": "credential.vc.json",
+    "documents": {}
+  },
+  "operation": "resolve-bound-policy",
+  "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/policy-binding.test.ts",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "policy binding: an EMBEDDED policy graph (signed inline) is accepted"
+}

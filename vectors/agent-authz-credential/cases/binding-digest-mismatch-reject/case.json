@@ -1,0 +1,23 @@
+{
+  "clauses": [
+    "#policy-binding (digest mismatch)",
+    "#verification (step 1)"
+  ],
+  "expected": {
+    "codes": [
+      "POLICY_INTEGRITY"
+    ],
+    "ok": false
+  },
+  "id": "agent-authz-credential/binding-digest-mismatch-reject",
+  "input": {
+    "credential": "credential.vc.json",
+    "documents": {
+      "https://binding-issuer.example/policies/p1.ttl": "policy-tampered.ttl"
+    }
+  },
+  "operation": "resolve-bound-policy",
+  "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/policy-binding.test.ts",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "policy binding: fetched octets that DO NOT match the signed digest MUST be rejected"
+}

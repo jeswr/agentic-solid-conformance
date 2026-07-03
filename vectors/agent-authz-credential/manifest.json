@@ -1,5 +1,5 @@
 {
-  "caseCount": 24,
+  "caseCount": 29,
   "cases": [
     {
       "id": "agent-authz-credential/happy",
@@ -96,6 +96,26 @@
     {
       "id": "agent-authz-credential/presentation-domain-mismatch",
       "path": "cases/presentation-domain-mismatch/case.json"
+    },
+    {
+      "id": "agent-authz-credential/binding-embedded-accept",
+      "path": "cases/binding-embedded-accept/case.json"
+    },
+    {
+      "id": "agent-authz-credential/binding-bare-iri-reject",
+      "path": "cases/binding-bare-iri-reject/case.json"
+    },
+    {
+      "id": "agent-authz-credential/binding-digest-match-accept",
+      "path": "cases/binding-digest-match-accept/case.json"
+    },
+    {
+      "id": "agent-authz-credential/binding-digest-mismatch-reject",
+      "path": "cases/binding-digest-mismatch-reject/case.json"
+    },
+    {
+      "id": "agent-authz-credential/binding-unreachable-reject",
+      "path": "cases/binding-unreachable-reject/case.json"
     }
   ],
   "clauseIndex": {
@@ -108,6 +128,21 @@
     "#layering": [
       "agent-authz-credential/happy",
       "agent-authz-credential/out-of-scope"
+    ],
+    "#policy-binding (bare IRI rejected)": [
+      "agent-authz-credential/binding-bare-iri-reject"
+    ],
+    "#policy-binding (digest mismatch)": [
+      "agent-authz-credential/binding-digest-mismatch-reject"
+    ],
+    "#policy-binding (embedded)": [
+      "agent-authz-credential/binding-embedded-accept"
+    ],
+    "#policy-binding (relatedResource digest)": [
+      "agent-authz-credential/binding-digest-match-accept"
+    ],
+    "#policy-binding (retrieval failure)": [
+      "agent-authz-credential/binding-unreachable-reject"
     ],
     "#presentations": [
       "agent-authz-credential/presentation-challenge-ok",
@@ -183,6 +218,13 @@
     ],
     "#verification (all)": [
       "agent-authz-credential/happy"
+    ],
+    "#verification (step 1)": [
+      "agent-authz-credential/binding-embedded-accept",
+      "agent-authz-credential/binding-bare-iri-reject",
+      "agent-authz-credential/binding-digest-match-accept",
+      "agent-authz-credential/binding-digest-mismatch-reject",
+      "agent-authz-credential/binding-unreachable-reject"
     ],
     "#verification (step 2: assemble the chain)": [
       "agent-authz-credential/chain-malformed"

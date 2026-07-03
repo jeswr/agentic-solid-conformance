@@ -1,5 +1,5 @@
 {
-  "caseCount": 12,
+  "caseCount": 13,
   "cases": [
     {
       "id": "odrl-delegation/valid-1hop",
@@ -46,11 +46,18 @@
       "path": "cases/revoked-deny/case.json"
     },
     {
+      "id": "odrl-delegation/use-does-not-grant-delegation-deny",
+      "path": "cases/use-does-not-grant-delegation-deny/case.json"
+    },
+    {
       "id": "odrl-delegation/prohibition-laundering-deny",
       "path": "cases/prohibition-laundering-deny/case.json"
     }
   ],
   "clauseIndex": {
+    "§3.2": [
+      "odrl-delegation/use-does-not-grant-delegation-deny"
+    ],
     "§4.1": [
       "odrl-delegation/valid-2hop",
       "odrl-delegation/depth-exceeded-explicit-deny"
@@ -72,6 +79,9 @@
     ],
     "§5.2.1-4": [
       "odrl-delegation/valid-1hop"
+    ],
+    "§5.2.4": [
+      "odrl-delegation/use-does-not-grant-delegation-deny"
     ],
     "§5.2.5": [
       "odrl-delegation/valid-2hop",

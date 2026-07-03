@@ -20,7 +20,7 @@ import {
   validateIntent,
   verifyProtocolDocument,
 } from "@jeswr/solid-a2a";
-import { verifyCredential, verifyPresentation } from "@jeswr/solid-vc";
+import { resolveBoundPolicy, verifyCredential, verifyPresentation } from "@jeswr/solid-vc";
 
 /** Parse a Turtle document to quads. */
 async function quadsOf(caseDir, name) {
@@ -159,6 +159,41 @@ export const ops = {
       domain: input.domain,
     });
     return { verified: r.verified, codes: r.errors.map((e) => e.code) };
+  },
+
+  /** AAC #policy-binding / #verification step 1 — policy-content binding. */
+  "resolve-bound-policy": async (input, caseDir) => {
+    const credential = JSON.parse(doc(caseDir, input.credential));
+    const fetchPort = async (url) => {
+      const entry = input.documents[url];
+      if (entry === undefined || typeof entry === "object") {
+        const status = typeof entry === "object" ? entry.status : 404;
+        return {
+          ok: false,
+          status,
+          headers: { get: () => null },
+          text: async () => "",
+          arrayBuffer: async () => new ArrayBuffer(0),
+        };
+      }
+      const body = doc(caseDir, entry);
+      const octets = new TextEncoder().encode(body);
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: (n) => (n.toLowerCase() === "content-type" ? "text/turtle" : null) },
+        text: async () => body,
+        arrayBuffer: async () => octets.buffer,
+      };
+    };
+    const r = await resolveBoundPolicy(credential, {
+      ...(Object.keys(input.documents).length > 0 && { fetch: fetchPort }),
+    });
+    return {
+      ok: r.errors.length === 0,
+      ...(r.policy?.form !== undefined && { form: r.policy.form }),
+      codes: r.errors.map((e) => e.code),
+    };
   },
 
   /** A2A RDF extension §Content addressing — RDFC-1.0 canonical N-Quads → sha256. */

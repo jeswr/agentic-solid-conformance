@@ -216,6 +216,28 @@ const CASES = [
       "itself performs no I/O).",
   },
   {
+    id: "use-does-not-grant-delegation-deny",
+    title:
+      "profile restriction: a bare odrl:use permission does NOT authorise delegation (grantUse must be literal) → deny",
+    clauses: ["§3.2", "§5.2.4"],
+    chain: [
+      {
+        ...rootPolicy({}),
+        permissions: [
+          { type: "permission", action: "read", target: RES, assignee: AGENT_A },
+          { type: "permission", action: "use", target: RES, assignee: AGENT_A },
+        ],
+      },
+      hop1Policy(),
+    ],
+    request: READ_B,
+    note:
+      "ODRL 2.2 marks grantUse as 'Included In: use'; followed literally, every use-grantee " +
+      "could mint downstream grants (privilege escalation). The profile RESTRICTS the " +
+      "hierarchy: delegation authority MUST be granted by a rule whose action is literally " +
+      "odrl:grantUse.",
+  },
+  {
     id: "prohibition-laundering-deny",
     title:
       "prohibition laundering: root PERMITS distribute to its own delegate but PROHIBITS it on the asset; the leaf re-grants distribute → deny",

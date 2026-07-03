@@ -10,20 +10,12 @@
     odrl:uid <https://alice.example/policies/root>;
     odrl:profile <https://w3id.org/jeswr/odrl-delegation>;
     odrl:assigner <https://alice.example/profile/card#me>;
-    odrl:permission _:n3-53, _:n3-54, _:n3-55;
-    odrl:prohibition _:n3-56.
-_:n3-53 odrl:assigner <https://alice.example/profile/card#me>;
+    odrl:permission _:n3-50, _:n3-51.
+_:n3-50 odrl:assigner <https://alice.example/profile/card#me>;
     odrl:action odrl:read;
     odrl:target <https://alice.example/notes/private.ttl>;
     odrl:assignee <https://agent-a.example/id#it>.
-_:n3-54 odrl:assigner <https://alice.example/profile/card#me>;
-    odrl:action odrl:grantUse;
+_:n3-51 odrl:assigner <https://alice.example/profile/card#me>;
+    odrl:action odrl:use;
     odrl:target <https://alice.example/notes/private.ttl>;
     odrl:assignee <https://agent-a.example/id#it>.
-_:n3-55 odrl:assigner <https://alice.example/profile/card#me>;
-    odrl:action odrl:distribute;
-    odrl:target <https://alice.example/notes/private.ttl>;
-    odrl:assignee <https://agent-a.example/id#it>.
-_:n3-56 odrl:assigner <https://alice.example/profile/card#me>;
-    odrl:action odrl:distribute;
-    odrl:target <https://alice.example/notes/private.ttl>.

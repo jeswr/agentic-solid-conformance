@@ -1,0 +1,22 @@
+{
+  "clauses": [
+    "#policy-binding (relatedResource digest)",
+    "#verification (step 1)"
+  ],
+  "expected": {
+    "codes": [],
+    "form": "reference",
+    "ok": true
+  },
+  "id": "agent-authz-credential/binding-digest-match-accept",
+  "input": {
+    "credential": "credential.vc.json",
+    "documents": {
+      "https://binding-issuer.example/policies/p1.ttl": "policy.ttl"
+    }
+  },
+  "operation": "resolve-bound-policy",
+  "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/policy-binding.test.ts",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "policy binding: a reference whose fetched octets match the signed digestSRI is accepted"
+}

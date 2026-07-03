@@ -12,12 +12,8 @@
     odrl:assigner <https://agent-a.example/id#it>;
     odrl:assignee <https://agent-b.example/id#it>;
     <https://w3id.org/jeswr/odrl-delegation#delegatedUnder> <https://alice.example/policies/root>;
-    odrl:permission _:n3-57, _:n3-58.
-_:n3-57 odrl:assigner <https://agent-a.example/id#it>;
+    odrl:permission _:n3-52.
+_:n3-52 odrl:assigner <https://agent-a.example/id#it>;
     odrl:assignee <https://agent-b.example/id#it>;
     odrl:action odrl:read;
-    odrl:target <https://alice.example/notes/private.ttl>.
-_:n3-58 odrl:assigner <https://agent-a.example/id#it>;
-    odrl:assignee <https://agent-b.example/id#it>;
-    odrl:action odrl:distribute;
     odrl:target <https://alice.example/notes/private.ttl>.

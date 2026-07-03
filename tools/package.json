@@ -5,7 +5,7 @@
   "description": "Generator + consistency checker for the agentic-solid-conformance vectors. LOCAL TOOLING pinned to the reference implementations — the vectors themselves are self-describing and never require this package.",
   "type": "module",
   "scripts": {
-    "generate": "node generate/odrl-delegation.mjs && node generate/aac-chain.mjs && node generate/aac-status.mjs && node generate/a2a.mjs",
+    "generate": "node generate/odrl-delegation.mjs && node generate/aac-chain.mjs && node generate/aac-status.mjs && node generate/aac-binding.mjs && node generate/a2a.mjs",
     "test": "node check/run-all.mjs"
   },
   "dependencies": {

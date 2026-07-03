@@ -1,0 +1,23 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/cid/v1"
+  ],
+  "assertionMethod": [
+    "https://binding-issuer.example/keys#k1"
+  ],
+  "id": "https://binding-issuer.example/org#id",
+  "verificationMethod": [
+    {
+      "controller": "https://binding-issuer.example/org#id",
+      "id": "https://binding-issuer.example/keys#k1",
+      "publicKeyJwk": {
+        "alg": "Ed25519",
+        "crv": "Ed25519",
+        "kty": "OKP",
+        "x": "-lp_peS-gJWa2yl2Kd1yybHxPRkZWjCDcKsYVwidUGI"
+      },
+      "publicKeyMultibase": "z6MkwJY1P2Bnhp3vKuJp3A5xC4WUpnxr2Wny7fPhEZsGauvy",
+      "type": "Multikey"
+    }
+  ]
+}

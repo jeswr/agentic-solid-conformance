@@ -1,0 +1,2 @@
+<https://binding-issuer.example/policies/p1.ttl#agreement> a <http://www.w3.org/ns/odrl/2/Agreement> .
+# swapped after signing

@@ -1,0 +1,28 @@
+{
+  "clauses": [
+    "§3.2",
+    "§5.2.4"
+  ],
+  "expected": {
+    "decision": "deny"
+  },
+  "id": "odrl-delegation/use-does-not-grant-delegation-deny",
+  "input": {
+    "chain": [
+      "chain-0.ttl",
+      "chain-1.ttl"
+    ],
+    "now": "2026-06-16T12:00:00Z",
+    "request": {
+      "action": "read",
+      "agent": "https://agent-b.example/id#it",
+      "target": "https://alice.example/notes/private.ttl"
+    },
+    "revoked": []
+  },
+  "note": "ODRL 2.2 marks grantUse as 'Included In: use'; followed literally, every use-grantee could mint downstream grants (privilege escalation). The profile RESTRICTS the hierarchy: delegation authority MUST be granted by a rule whose action is literally odrl:grantUse.",
+  "operation": "evaluate-delegated-chain",
+  "source": "solid-odrl@18df183 test/characterization.test.ts (delegation decision matrix)",
+  "spec": "https://w3id.org/jeswr/odrl-delegation",
+  "title": "profile restriction: a bare odrl:use permission does NOT authorise delegation (grantUse must be literal) → deny"
+}
