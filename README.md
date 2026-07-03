@@ -8,13 +8,37 @@ reproduce to claim conformance. This is the "make the second independent impleme
 measurable" artifact of the Accountable Web of Agents programme (unite `decisions/0001`;
 `accountable-agent-runtime` design).
 
-Three vector suites, one per spec:
+Three vector suites, one per spec — **56 cases**:
 
-| Suite | Spec under test | Reference implementation the verdicts were extracted from |
-|---|---|---|
-| [`vectors/odrl-delegation/`](./vectors/odrl-delegation/) | [ODRL Agent-Delegation Profile](https://github.com/jeswr/solid-odrl) (`https://w3id.org/jeswr/odrl-delegation`) | `@jeswr/solid-odrl` `evaluateDelegated` @ `18df183` (branch `feat/delegation-profile`) |
-| [`vectors/agent-authz-credential/`](./vectors/agent-authz-credential/) | [Agent Authorization Credentials](https://github.com/jeswr/agent-authz-credential-spec) (unofficial CCG-shaped draft) | `@jeswr/accountable-agent-runtime` `verifyAgentAuthority` @ `0aadd46` (four-phase chain verifier) + `@jeswr/solid-vc` @ `d6b4e34` (branch `feat/mtr4-agent-authz-builder-followups`: status gate, presentation verification) |
-| [`vectors/a2a-rdf/`](./vectors/a2a-rdf/) | [RDF Protocol Documents — an A2A Extension](https://github.com/jeswr/a2a-rdf-extension) (`https://w3id.org/jeswr/a2a-rdf/v1`) | `@jeswr/solid-a2a` @ `15ed62a` (0.2.0: RDFC-1.0 protocol hashing, handshake codec) |
+| Suite | Cases | Spec under test | Reference implementation the verdicts were extracted from |
+|---|---|---|---|
+| [`vectors/odrl-delegation/`](./vectors/odrl-delegation/) | 13 | [ODRL Agent-Delegation Profile](https://github.com/jeswr/solid-odrl) (`https://w3id.org/jeswr/odrl-delegation`) | `@jeswr/solid-odrl` `evaluateDelegated` @ `18df183` (branch `feat/delegation-profile`) |
+| [`vectors/agent-authz-credential/`](./vectors/agent-authz-credential/) | 29 | [Agent Authorization Credentials](https://github.com/jeswr/agent-authz-credential-spec) (unofficial CCG-shaped draft) | `@jeswr/accountable-agent-runtime` `verifyAgentAuthority` @ `0aadd46` (four-phase chain verifier) + `@jeswr/solid-vc` @ `d6b4e34` (branch `feat/mtr4-agent-authz-builder-followups`: status gate, policy binding, presentation verification) |
+| [`vectors/a2a-rdf/`](./vectors/a2a-rdf/) | 14 | [RDF Protocol Documents — an A2A Extension](https://github.com/jeswr/a2a-rdf-extension) (`https://w3id.org/jeswr/a2a-rdf/v1`) | `@jeswr/solid-a2a` @ `15ed62a` (0.2.0: RDFC-1.0 protocol hashing, handshake codec) |
+
+Case inventory at a glance:
+
+- **odrl-delegation** (`evaluate-delegated-chain`): valid-1hop, valid-2hop,
+  nextpolicy-mandated (the three permits); over-broad, expired-mid-chain, cycle,
+  depth-exceeded (default budget + explicit `lteq 1`), nextpolicy-out-of-scope,
+  nextpolicy-violated, revoked (with the `odrld:Revocation` document),
+  use-does-not-grant-delegation (§3.2 privilege-escalation guard),
+  prohibition-laundering (the denies).
+- **agent-authz-credential**: the 16-case four-phase chain matrix
+  (`verify-agent-authority`: happy, actor-is-leaf-assignee; chain-malformed; forged-hop,
+  expired, not-yet-valid; binding-mismatch; revoked, status-unreachable; out-of-scope,
+  expired-middle-hop, prohibition-laundering, over-length; the three
+  identity-composition rejections) + 5 Bitstring status cases
+  (`verify-credential-status`: clear-accept, revoked-bit, suspension-bit, unreachable,
+  wrong-issuer) + 3 presentation-replay cases (`verify-presentation-replay`) + 5
+  policy-content-binding cases (`resolve-bound-policy`: embedded, bare-IRI reject,
+  digest match, digest mismatch, unreachable).
+- **a2a-rdf**: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document
+  (`rdfc10-hash`, reproducing the spec's published `sha256:4af1e70e…` with the canonical
+  N-Quads shipped byte-exact), pin verification accept/tamper-reject (`verify-pd-pin`),
+  5 strict handshake-decode cases (`decode-handshake`), the 4-row no-silent-downgrade
+  decision table (`may-downgrade-to-nl`), and SHACL intent validation accept/reject
+  (`validate-intent`).
 
 The vectors are **self-describing data** — JSON case files referencing Turtle / JSON-LD input
 documents — with **no dependency on any `@jeswr` code**. Any implementation, in any language,
@@ -162,7 +186,21 @@ The stolen-presentation replay control: a Verifiable Presentation is bound to a
 verify-presentation-replay(presentation, challenge, domain, now) → { verified }
 ```
 
-### 5. `rdfc10-hash` — A2A RDF extension §Content addressing
+### 5. `resolve-bound-policy` — AAC §Policy-content binding / §Verification step 1
+
+```
+resolve-bound-policy(credential, documents) → { ok, form?, codes }
+```
+
+- `credential`: a signed VC whose `credentialSubject` carries `svc:policy` — embedded
+  content, a reference with a signed digest (`relatedResource`-style `digestSRI` /
+  `digestMultibase`), or a bare IRI.
+- `documents`: the URL → file map for by-reference resolution (as in operation 3).
+- `expected`: `ok` + the accepted binding `form` (`"embedded"` / `"reference"`), or
+  `codes: ["POLICY_INTEGRITY"]` — a bare digest-less reference, a digest mismatch, and an
+  unreachable policy document MUST all be rejected.
+
+### 6. `rdfc10-hash` — A2A RDF extension §Content addressing
 
 ```
 rdfc10-hash(graph) → { hash, canonical }
@@ -174,7 +212,7 @@ rdfc10-hash(graph) → { hash, canonical }
   (byte-exact, LF line endings) — provided so a failing implementation can diff the
   canonicalization step from the digest step.
 
-### 6. `verify-pd-pin` — A2A RDF extension §Content addressing (rejection rule)
+### 7. `verify-pd-pin` — A2A RDF extension §Content addressing (rejection rule)
 
 ```
 verify-pd-pin(body, pinnedHash) → { ok }
@@ -183,7 +221,7 @@ verify-pd-pin(body, pinnedHash) → { ok }
 `ok` is true iff `rdfc10-hash(body).hash == pinnedHash`. A mismatch means the fetched
 Protocol Document MUST be rejected and the exchange treated as never upgraded.
 
-### 7. `decode-handshake` — A2A RDF extension §Upgrade offer / §Upgrade response
+### 8. `decode-handshake` — A2A RDF extension §Upgrade offer / §Upgrade response
 
 ```
 decode-handshake(payload) → { ok } | { ok: false }
@@ -194,7 +232,7 @@ Strict structural validation of an `upgrade-offer` / `upgrade-response` JSON pay
 is missing-where-required or not a JSON boolean MUST be rejected, never coerced (the
 malformed-flag coercion would silently weaken the no-silent-downgrade rule).
 
-### 8. `may-downgrade-to-nl` — A2A RDF extension §The no-silent-downgrade rule
+### 9. `may-downgrade-to-nl` — A2A RDF extension §The no-silent-downgrade rule
 
 ```
 may-downgrade-to-nl(offer, response) → { downgrade }
@@ -205,7 +243,7 @@ may-downgrade-to-nl(offer, response) → { downgrade }
 including an accepted offer (proceed in RDF, NL simply unused) and a declined `required`
 offer (abort with an error) — yields false.
 
-### 9. `validate-intent` — A2A RDF extension §Message-content binding (pre-action validation)
+### 10. `validate-intent` — A2A RDF extension §Message-content binding (pre-action validation)
 
 ```
 validate-intent(dataGraph, shapesGraph) → { conforms }
