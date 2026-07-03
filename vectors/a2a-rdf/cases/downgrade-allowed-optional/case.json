@@ -1,0 +1,27 @@
+{
+  "clauses": [
+    "§The no-silent-downgrade rule (all three conditions hold)"
+  ],
+  "expected": {
+    "downgrade": true
+  },
+  "id": "a2a-rdf/downgrade-allowed-optional",
+  "input": {
+    "offer": {
+      "kind": "upgrade-offer",
+      "protocolHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509",
+      "protocolName": "Grant access",
+      "protocolSource": "https://alice.pod.example/protocols/grant-access",
+      "required": false
+    },
+    "response": {
+      "accept": false,
+      "kind": "upgrade-response",
+      "protocolHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509"
+    }
+  },
+  "operation": "may-downgrade-to-nl",
+  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "title": "no-silent-downgrade: a NON-required offer declined about the SAME hash → NL fallback allowed"
+}

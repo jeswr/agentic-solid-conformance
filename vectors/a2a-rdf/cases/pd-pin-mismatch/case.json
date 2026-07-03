@@ -1,0 +1,17 @@
+{
+  "clauses": [
+    "§Content addressing (recompute on fetch; the hash is the trust anchor)"
+  ],
+  "expected": {
+    "ok": false
+  },
+  "id": "a2a-rdf/pd-pin-mismatch",
+  "input": {
+    "body": "protocol-document-tampered.ttl",
+    "pinnedHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509"
+  },
+  "operation": "verify-pd-pin",
+  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "title": "verify-pd-pin: a tampered PD body MUST be rejected against the pin"
+}

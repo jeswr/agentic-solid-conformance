@@ -1,0 +1,17 @@
+{
+  "clauses": [
+    "§Message-content binding (mandatory pre-action validation)"
+  ],
+  "expected": {
+    "conforms": true
+  },
+  "id": "a2a-rdf/intent-valid",
+  "input": {
+    "dataGraph": "intent.ttl",
+    "shapesGraph": "protocol-document.ttl"
+  },
+  "operation": "validate-intent",
+  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "title": "validate-intent: the spec's conforming grant intent validates against the PD shape"
+}

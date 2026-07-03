@@ -1,0 +1,7 @@
+@prefix a2a: <https://w3id.org/jeswr/a2a#>.
+@prefix schema: <https://schema.org/>.
+
+<urn:a2a:intent:kxs8cw> a a2a:Intent;
+    a2a:action [ a a2a:GrantAction;
+        schema:object <https://alice.pod.example/notes/>;
+        schema:recipient <https://bob.example/profile#me> ].

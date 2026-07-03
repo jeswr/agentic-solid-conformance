@@ -1,0 +1,9 @@
+@prefix a2a: <https://w3id.org/jeswr/a2a#>.
+@prefix schema: <https://schema.org/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+
+<urn:a2a:intent:kxs8cv> a a2a:Intent;
+    a2a:action [ a a2a:GrantAction;
+        schema:object <https://alice.pod.example/notes/>;
+        schema:recipient <https://bob.example/profile#me>;
+        a2a:mode acl:Read, acl:Write ].

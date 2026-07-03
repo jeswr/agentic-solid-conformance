@@ -1,0 +1,28 @@
+{
+  "clauses": [
+    "§The no-silent-downgrade rule (condition 2)"
+  ],
+  "expected": {
+    "downgrade": false
+  },
+  "id": "a2a-rdf/downgrade-refused-required",
+  "input": {
+    "offer": {
+      "kind": "upgrade-offer",
+      "protocolHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509",
+      "protocolName": "Grant access",
+      "protocolSource": "https://alice.pod.example/protocols/grant-access",
+      "required": true
+    },
+    "response": {
+      "accept": false,
+      "kind": "upgrade-response",
+      "protocolHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509",
+      "reason": "unsupported"
+    }
+  },
+  "operation": "may-downgrade-to-nl",
+  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "title": "no-silent-downgrade: a REQUIRED (security-bearing) offer declined → the exchange is aborted, NEVER retried in prose"
+}

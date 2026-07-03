@@ -10,7 +10,22 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { verifyAgentAuthority } from "@jeswr/accountable-agent-runtime";
 import { evaluateDelegated, parsePolicy } from "@jeswr/solid-odrl";
+import { parseRdf } from "@jeswr/fetch-rdf";
+import {
+  canonicalNQuads,
+  decodeUpgradeOffer,
+  decodeUpgradeResponse,
+  hashQuads,
+  mayDowngradeToNl,
+  validateIntent,
+  verifyProtocolDocument,
+} from "@jeswr/solid-a2a";
 import { verifyCredential, verifyPresentation } from "@jeswr/solid-vc";
+
+/** Parse a Turtle document to quads. */
+async function quadsOf(caseDir, name) {
+  return [...(await parseRdf(doc(caseDir, name), "text/turtle", {}))];
+}
 import { REPO_ROOT } from "../lib/emit.mjs";
 
 /** Read a case-relative document. */
@@ -144,5 +159,52 @@ export const ops = {
       domain: input.domain,
     });
     return { verified: r.verified, codes: r.errors.map((e) => e.code) };
+  },
+
+  /** A2A RDF extension §Content addressing — RDFC-1.0 canonical N-Quads → sha256. */
+  "rdfc10-hash": async (input, caseDir) => {
+    const quads = await quadsOf(caseDir, input.graph);
+    const hash = await hashQuads(quads);
+    const canonical = await canonicalNQuads(quads);
+    // `expected.canonical` is a FILE REFERENCE: compare byte-exactly, then echo the
+    // reference so deepEqual against `expected` closes over both fields.
+    const want = doc(caseDir, "canonical.nq");
+    return { hash, canonical: canonical === want ? "canonical.nq" : "<canonicalization drift>" };
+  },
+
+  /** A2A RDF extension §Content addressing — reject a body that misses its pin. */
+  "verify-pd-pin": async (input, caseDir) => {
+    return { ok: await verifyProtocolDocument(doc(caseDir, input.body), input.pinnedHash) };
+  },
+
+  /** A2A RDF extension §Upgrade offer / §Upgrade response — strict payload decode. */
+  "decode-handshake": async (input) => {
+    try {
+      const p = input.payload;
+      if (p?.kind === "upgrade-offer") decodeUpgradeOffer(p);
+      else decodeUpgradeResponse(p);
+      return { ok: true };
+    } catch {
+      return { ok: false };
+    }
+  },
+
+  /** A2A RDF extension §The no-silent-downgrade rule. */
+  "may-downgrade-to-nl": async (input) => {
+    return {
+      downgrade: mayDowngradeToNl(
+        decodeUpgradeOffer(input.offer),
+        decodeUpgradeResponse(input.response),
+      ),
+    };
+  },
+
+  /** A2A RDF extension §Message-content binding — mandatory pre-action SHACL validation. */
+  "validate-intent": async (input, caseDir) => {
+    const report = await validateIntent(
+      await quadsOf(caseDir, input.dataGraph),
+      await quadsOf(caseDir, input.shapesGraph),
+    );
+    return { conforms: report.conforms };
   },
 };

@@ -1,0 +1,22 @@
+{
+  "clauses": [
+    "§Upgrade offer (required: malformed flag MUST NOT be coerced)"
+  ],
+  "expected": {
+    "ok": false
+  },
+  "id": "a2a-rdf/decode-offer-malformed-required",
+  "input": {
+    "payload": {
+      "kind": "upgrade-offer",
+      "protocolHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509",
+      "protocolName": "Grant access",
+      "protocolSource": "https://alice.pod.example/protocols/grant-access",
+      "required": "true"
+    }
+  },
+  "operation": "decode-handshake",
+  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "title": "decode-handshake: an offer whose required is a STRING MUST be rejected (never coerced)"
+}

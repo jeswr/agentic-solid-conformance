@@ -1,0 +1,107 @@
+{
+  "caseCount": 14,
+  "cases": [
+    {
+      "id": "a2a-rdf/pd-hash-grant-access",
+      "path": "cases/pd-hash-grant-access/case.json"
+    },
+    {
+      "id": "a2a-rdf/pd-pin-match",
+      "path": "cases/pd-pin-match/case.json"
+    },
+    {
+      "id": "a2a-rdf/pd-pin-mismatch",
+      "path": "cases/pd-pin-mismatch/case.json"
+    },
+    {
+      "id": "a2a-rdf/decode-offer-ok",
+      "path": "cases/decode-offer-ok/case.json"
+    },
+    {
+      "id": "a2a-rdf/decode-offer-malformed-required",
+      "path": "cases/decode-offer-malformed-required/case.json"
+    },
+    {
+      "id": "a2a-rdf/decode-response-ok",
+      "path": "cases/decode-response-ok/case.json"
+    },
+    {
+      "id": "a2a-rdf/decode-response-missing-accept",
+      "path": "cases/decode-response-missing-accept/case.json"
+    },
+    {
+      "id": "a2a-rdf/decode-response-nonboolean-accept",
+      "path": "cases/decode-response-nonboolean-accept/case.json"
+    },
+    {
+      "id": "a2a-rdf/downgrade-accepted",
+      "path": "cases/downgrade-accepted/case.json"
+    },
+    {
+      "id": "a2a-rdf/downgrade-refused-required",
+      "path": "cases/downgrade-refused-required/case.json"
+    },
+    {
+      "id": "a2a-rdf/downgrade-allowed-optional",
+      "path": "cases/downgrade-allowed-optional/case.json"
+    },
+    {
+      "id": "a2a-rdf/downgrade-unrelated-response",
+      "path": "cases/downgrade-unrelated-response/case.json"
+    },
+    {
+      "id": "a2a-rdf/intent-valid",
+      "path": "cases/intent-valid/case.json"
+    },
+    {
+      "id": "a2a-rdf/intent-missing-mode",
+      "path": "cases/intent-missing-mode/case.json"
+    }
+  ],
+  "clauseIndex": {
+    "§Content addressing (recompute on fetch)": [
+      "a2a-rdf/pd-pin-match"
+    ],
+    "§Content addressing (recompute on fetch; the hash is the trust anchor)": [
+      "a2a-rdf/pd-pin-mismatch"
+    ],
+    "§Content addressing (steps 1-3)": [
+      "a2a-rdf/pd-hash-grant-access"
+    ],
+    "§Message-content binding (mandatory pre-action validation)": [
+      "a2a-rdf/intent-valid",
+      "a2a-rdf/intent-missing-mode"
+    ],
+    "§The no-silent-downgrade rule (all three conditions hold)": [
+      "a2a-rdf/downgrade-allowed-optional"
+    ],
+    "§The no-silent-downgrade rule (condition 1)": [
+      "a2a-rdf/downgrade-unrelated-response"
+    ],
+    "§The no-silent-downgrade rule (condition 2)": [
+      "a2a-rdf/downgrade-refused-required"
+    ],
+    "§The no-silent-downgrade rule (condition 3)": [
+      "a2a-rdf/downgrade-accepted"
+    ],
+    "§Upgrade offer": [
+      "a2a-rdf/decode-offer-ok"
+    ],
+    "§Upgrade offer (required: malformed flag MUST NOT be coerced)": [
+      "a2a-rdf/decode-offer-malformed-required"
+    ],
+    "§Upgrade response": [
+      "a2a-rdf/decode-response-ok"
+    ],
+    "§Upgrade response (accept: MUST NOT default)": [
+      "a2a-rdf/decode-response-missing-accept"
+    ],
+    "§Upgrade response (accept: not a JSON boolean → reject)": [
+      "a2a-rdf/decode-response-nonboolean-accept"
+    ]
+  },
+  "description": "Vectors for the A2A RDF extension: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document (+ canonical N-Quads), pin verification accept/reject, strict handshake payload decoding, the full no-silent-downgrade decision table, and SHACL intent validation.",
+  "schemaVersion": 1,
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "suite": "a2a-rdf"
+}
