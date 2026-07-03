@@ -1,0 +1,38 @@
+{
+  "holder": "https://presenter.example/agents/p#it",
+  "id": "urn:uuid:d1c18586-1051-41f8-8992-e8241997a26a",
+  "proof": {
+    "challenge": "an-old-challenge",
+    "created": "2026-07-03T08:53:42.989Z",
+    "cryptosuite": "eddsa-rdfc-2022",
+    "domain": "https://verifier.example/authorize",
+    "proofPurpose": "authentication",
+    "proofValue": "zhuUuAnBu51WBQBRBBfuFRJBQbVWwiSqZeqKA1LKMpfbMc9rsCyYtHX6jHz9UvCqSrfxWJdQWfqNG4rvCJQgfcCP",
+    "type": "DataIntegrityProof",
+    "verificationMethod": "https://presenter.example/keys#k1"
+  },
+  "verifiableCredential": [
+    {
+      "credentialSubject": {
+        "https://w3id.org/jeswr/solid-vc#action": "read",
+        "https://w3id.org/jeswr/solid-vc#authorizes": "https://presenter.example/agents/p#it",
+        "https://w3id.org/jeswr/solid-vc#target": "https://alice.solid.example/data/records.ttl",
+        "id": "https://status-issuer.example/org#id"
+      },
+      "id": "urn:uuid:608917e8-0e51-4756-ab44-57eaf0cfe85f",
+      "issuer": "https://status-issuer.example/org#id",
+      "proof": {
+        "created": "2026-07-03T08:53:42.988Z",
+        "cryptosuite": "eddsa-rdfc-2022",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "zXuR5c7kvLX99kKkVupBVvqnDLQrsTBkLSuFjZgHSyDR7mf1spqihpABE1EamccQH8Bsg3ry2ftGuT7s5pxWi1pH",
+        "type": "DataIntegrityProof",
+        "verificationMethod": "https://status-issuer.example/keys#k1"
+      },
+      "type": [
+        "AgentAuthorizationCredential"
+      ],
+      "validFrom": "2026-07-03T08:53:42.988Z"
+    }
+  ]
+}

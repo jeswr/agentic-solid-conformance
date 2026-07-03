@@ -10,6 +10,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { verifyAgentAuthority } from "@jeswr/accountable-agent-runtime";
 import { evaluateDelegated, parsePolicy } from "@jeswr/solid-odrl";
+import { verifyCredential, verifyPresentation } from "@jeswr/solid-vc";
 import { REPO_ROOT } from "../lib/emit.mjs";
 
 /** Read a case-relative document. */
@@ -95,5 +96,53 @@ export const ops = {
       ...(actorChain !== undefined && { actorChain }),
     });
     return { authorized: r.authorized, phase: r.phase, ...(r.code && { code: r.code }) };
+  },
+
+  /** AAC #revocation-verification (Bitstring direction) + #sec-status-availability. */
+  "verify-credential-status": async (input, caseDir) => {
+    const keyring = await loadKeyring();
+    const credential = JSON.parse(doc(caseDir, input.credential));
+    const fetchPort = async (url) => {
+      const entry = input.documents[url];
+      if (entry === undefined || typeof entry === "object") {
+        const status = typeof entry === "object" ? entry.status : 404;
+        return {
+          ok: false,
+          status,
+          headers: { get: () => null },
+          text: async () => "",
+          arrayBuffer: async () => new ArrayBuffer(0),
+        };
+      }
+      const body = doc(caseDir, entry);
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: (n) => (n.toLowerCase() === "content-type" ? "text/turtle" : null) },
+        text: async () => body,
+        arrayBuffer: async () => new TextEncoder().encode(body).buffer,
+      };
+    };
+    const r = await verifyCredential(credential, {
+      resolveKey: keyring.resolveKey,
+      isControlledBy: keyring.isControlledBy,
+      now: new Date(input.now),
+      fetch: fetchPort,
+    });
+    return { verified: r.verified, codes: r.errors.map((e) => e.code) };
+  },
+
+  /** AAC #presentations / #sec-replay — challenge/domain anti-replay binding. */
+  "verify-presentation-replay": async (input, caseDir) => {
+    const keyring = await loadKeyring();
+    const vp = JSON.parse(doc(caseDir, input.presentation));
+    const r = await verifyPresentation(vp, {
+      resolveKey: keyring.resolveKey,
+      isControlledBy: keyring.isControlledBy,
+      now: new Date(input.now),
+      challenge: input.challenge,
+      domain: input.domain,
+    });
+    return { verified: r.verified, codes: r.errors.map((e) => e.code) };
   },
 };

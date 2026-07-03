@@ -1,5 +1,5 @@
 {
-  "caseCount": 16,
+  "caseCount": 24,
   "cases": [
     {
       "id": "agent-authz-credential/happy",
@@ -64,15 +64,68 @@
     {
       "id": "agent-authz-credential/identity-composition-wrong-leaf",
       "path": "cases/identity-composition-wrong-leaf/case.json"
+    },
+    {
+      "id": "agent-authz-credential/status-bit-clear-accept",
+      "path": "cases/status-bit-clear-accept/case.json"
+    },
+    {
+      "id": "agent-authz-credential/status-bit-set-revoked",
+      "path": "cases/status-bit-set-revoked/case.json"
+    },
+    {
+      "id": "agent-authz-credential/status-suspension-bit-set",
+      "path": "cases/status-suspension-bit-set/case.json"
+    },
+    {
+      "id": "agent-authz-credential/status-list-unreachable",
+      "path": "cases/status-list-unreachable/case.json"
+    },
+    {
+      "id": "agent-authz-credential/status-list-wrong-issuer",
+      "path": "cases/status-list-wrong-issuer/case.json"
+    },
+    {
+      "id": "agent-authz-credential/presentation-challenge-ok",
+      "path": "cases/presentation-challenge-ok/case.json"
+    },
+    {
+      "id": "agent-authz-credential/presentation-challenge-mismatch",
+      "path": "cases/presentation-challenge-mismatch/case.json"
+    },
+    {
+      "id": "agent-authz-credential/presentation-domain-mismatch",
+      "path": "cases/presentation-domain-mismatch/case.json"
     }
   ],
   "clauseIndex": {
+    "#credential-shape (credentialStatus)": [
+      "agent-authz-credential/status-bit-clear-accept"
+    ],
     "#issuance": [
       "agent-authz-credential/forged-hop"
     ],
     "#layering": [
       "agent-authz-credential/happy",
       "agent-authz-credential/out-of-scope"
+    ],
+    "#presentations": [
+      "agent-authz-credential/presentation-challenge-ok",
+      "agent-authz-credential/presentation-challenge-mismatch",
+      "agent-authz-credential/presentation-domain-mismatch"
+    ],
+    "#revocation-publication (rule 3)": [
+      "agent-authz-credential/status-bit-set-revoked"
+    ],
+    "#revocation-publication (rule 3: suspension ≠ revocation)": [
+      "agent-authz-credential/status-suspension-bit-set"
+    ],
+    "#revocation-verification (issuer binding)": [
+      "agent-authz-credential/status-list-wrong-issuer"
+    ],
+    "#revocation-verification (rule 1)": [
+      "agent-authz-credential/status-bit-clear-accept",
+      "agent-authz-credential/status-bit-set-revoked"
     ],
     "#revocation-verification (rule 2: statement → policy)": [
       "agent-authz-credential/revoked"
@@ -89,8 +142,15 @@
     "#sec-replay (stale artifact)": [
       "agent-authz-credential/expired"
     ],
+    "#sec-replay (stolen presentation)": [
+      "agent-authz-credential/presentation-challenge-ok",
+      "agent-authz-credential/presentation-challenge-mismatch",
+      "agent-authz-credential/presentation-domain-mismatch"
+    ],
     "#sec-status-availability": [
-      "agent-authz-credential/status-unreachable"
+      "agent-authz-credential/status-unreachable",
+      "agent-authz-credential/status-list-unreachable",
+      "agent-authz-credential/status-list-wrong-issuer"
     ],
     "#verification (Phase A: signature)": [
       "agent-authz-credential/forged-hop"
@@ -104,7 +164,8 @@
     ],
     "#verification (Phase C)": [
       "agent-authz-credential/revoked",
-      "agent-authz-credential/status-unreachable"
+      "agent-authz-credential/status-unreachable",
+      "agent-authz-credential/status-list-unreachable"
     ],
     "#verification (Phase D)": [
       "agent-authz-credential/out-of-scope",

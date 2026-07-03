@@ -1,0 +1,24 @@
+@prefix cred: <https://www.w3.org/2018/credentials#>.
+@prefix sec: <https://w3id.org/security#>.
+@prefix svc: <https://w3id.org/jeswr/solid-vc#>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix odrl: <http://www.w3.org/ns/odrl/2/>.
+@prefix schema: <https://schema.org/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+
+<https://status-issuer.example/status/list-1> a cred:VerifiableCredential, svc:BitstringStatusListCredential;
+    cred:issuer <https://presenter.example/agents/p#it>;
+    cred:validFrom "2026-07-03T08:53:42.988Z"^^xsd:dateTime;
+    cred:credentialSubject <https://status-issuer.example/status/list-1#list>.
+<https://status-issuer.example/status/list-1#list> <https://www.w3.org/ns/credentials/status#statusPurpose> "revocation";
+    <https://www.w3.org/ns/credentials/status#encodedList> "uH4sIAAAAAAAAE-3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAIC3AYbSVKsAQAAA".
+<https://status-issuer.example/status/list-1> sec:proof _:n3-5.
+_:n3-5 a sec:DataIntegrityProof;
+    sec:cryptosuite "eddsa-rdfc-2022";
+    sec:verificationMethod <https://presenter.example/keys#k1>;
+    sec:proofPurpose sec:assertionMethod;
+    dcterms:created "2026-07-03T08:53:42.988Z"^^xsd:dateTime;
+    sec:proofValue "z2dPv2fN4tmyz5QqARS85zyuyUXmeoTbkmiukn8Aw5avKLXdjW1ZdavvKbHvG984w6tCd6pVDxFgwYSoEozr8EDqW".

@@ -1,0 +1,23 @@
+{
+  "clauses": [
+    "#presentations",
+    "#sec-replay (stolen presentation)"
+  ],
+  "expected": {
+    "codes": [
+      "DOMAIN_MISMATCH"
+    ],
+    "verified": false
+  },
+  "id": "agent-authz-credential/presentation-domain-mismatch",
+  "input": {
+    "challenge": "c-8f21-issued-by-verifier",
+    "domain": "https://verifier.example/authorize",
+    "now": "2026-08-01T00:00:00.000Z",
+    "presentation": "presentation.vp.json"
+  },
+  "operation": "verify-presentation-replay",
+  "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/presentation.test.ts",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "Presentation bound to a DIFFERENT relying party's domain → deny DOMAIN_MISMATCH"
+}

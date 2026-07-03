@@ -1,0 +1,23 @@
+{
+  "clauses": [
+    "#revocation-publication (rule 3: suspension ≠ revocation)"
+  ],
+  "expected": {
+    "codes": [
+      "SUSPENDED"
+    ],
+    "verified": false
+  },
+  "id": "agent-authz-credential/status-suspension-bit-set",
+  "input": {
+    "credential": "credential.vc.json",
+    "documents": {
+      "https://status-issuer.example/status/list-1": "status-list.ttl"
+    },
+    "now": "2026-08-01T00:00:00.000Z"
+  },
+  "operation": "verify-credential-status",
+  "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/status-list.test.ts",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "Bitstring status: suspension bit SET → deny SUSPENDED (distinct, reversible purpose)"
+}

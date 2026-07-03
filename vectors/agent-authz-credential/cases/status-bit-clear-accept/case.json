@@ -1,0 +1,22 @@
+{
+  "clauses": [
+    "#revocation-verification (rule 1)",
+    "#credential-shape (credentialStatus)"
+  ],
+  "expected": {
+    "codes": [],
+    "verified": true
+  },
+  "id": "agent-authz-credential/status-bit-clear-accept",
+  "input": {
+    "credential": "credential.vc.json",
+    "documents": {
+      "https://status-issuer.example/status/list-1": "status-list.ttl"
+    },
+    "now": "2026-08-01T00:00:00.000Z"
+  },
+  "operation": "verify-credential-status",
+  "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/status-list.test.ts",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "Bitstring status: revocation bit CLEAR → verified"
+}
