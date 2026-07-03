@@ -1,0 +1,41 @@
+@prefix odrl: <http://www.w3.org/ns/odrl/2/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix dpv: <https://w3id.org/dpv#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<https://alice.solid.example/agents/engagements/e1/mandate.ttl#policy> a odrl:Agreement;
+    odrl:uid <https://alice.solid.example/agents/engagements/e1/mandate.ttl#policy>;
+    odrl:profile <https://w3id.org/jeswr/odrl-delegation>;
+    odrl:assigner <https://alice.solid.example/profile/card#me>;
+    odrl:permission _:n3-0, _:n3-2;
+    odrl:prohibition _:n3-7.
+_:n3-0 odrl:assigner <https://alice.solid.example/profile/card#me>;
+    odrl:action odrl:read;
+    odrl:target <https://alice.solid.example/data/records.ttl>;
+    odrl:assignee <https://agent-a.example/id#it>;
+    odrl:constraint _:n3-1.
+_:n3-1 odrl:leftOperand odrl:dateTime;
+    odrl:operator odrl:lteq;
+    odrl:rightOperand "2027-07-03T00:00:00Z"^^xsd:dateTime.
+_:n3-2 odrl:assigner <https://alice.solid.example/profile/card#me>;
+    odrl:action odrl:grantUse;
+    odrl:target <https://alice.solid.example/data/records.ttl>;
+    odrl:assignee <https://agent-a.example/id#it>;
+    odrl:constraint _:n3-3, _:n3-4;
+    odrl:duty _:n3-5, _:n3-6.
+_:n3-3 odrl:leftOperand <https://w3id.org/jeswr/odrl-delegation#delegationDepth>;
+    odrl:operator odrl:lteq;
+    odrl:rightOperand 1.
+_:n3-4 odrl:leftOperand odrl:dateTime;
+    odrl:operator odrl:lteq;
+    odrl:rightOperand "2027-07-03T00:00:00Z"^^xsd:dateTime.
+_:n3-5 odrl:action odrl:nextPolicy;
+    odrl:target <https://alice.solid.example/agents/engagements/e1/agreement.ttl#policy>.
+_:n3-6 odrl:action odrl:inform;
+    odrl:target <https://alice.solid.example/profile/card#me>.
+_:n3-7 odrl:assigner <https://alice.solid.example/profile/card#me>;
+    odrl:action odrl:distribute;
+    odrl:target <https://alice.solid.example/data/records.ttl>.

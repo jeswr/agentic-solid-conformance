@@ -1,0 +1,39 @@
+{
+  "clauses": [
+    "#verification (Phase D: authenticated-agent rule)"
+  ],
+  "expected": {
+    "authorized": false,
+    "code": "IDENTITY_COMPOSITION_FAILED",
+    "phase": "composition"
+  },
+  "id": "agent-authz-credential/identity-composition-missing",
+  "input": {
+    "actor": "https://institute.example/agents/research#it",
+    "now": "2026-08-01T00:00:00.000Z",
+    "primaryChain": {
+      "credentials": [
+        "mandate.vc.json",
+        "agreement.vc.json"
+      ],
+      "policies": [
+        "mandate.ttl",
+        "agreement.ttl"
+      ]
+    },
+    "request": {
+      "action": "read",
+      "attributes": {
+        "dateTime": "2026-08-01T00:00:00.000Z",
+        "purpose": "https://w3id.org/dpv#ResearchAndDevelopment"
+      },
+      "target": "https://alice.solid.example/data/records.ttl"
+    },
+    "revoked": [],
+    "rootPrincipal": "https://alice.solid.example/profile/card#me"
+  },
+  "operation": "verify-agent-authority",
+  "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "IDENTITY COMPOSITION: actor ≠ leaf assignee and NO second chain → denied"
+}

@@ -1,0 +1,4 @@
+@prefix odrld: <https://w3id.org/jeswr/odrl-delegation#>.
+
+<https://alice.solid.example/revocations/r1#it> a odrld:Revocation;
+    odrld:revokedPolicy <https://alice.solid.example/agents/engagements/e1/agreement.ttl#policy>.

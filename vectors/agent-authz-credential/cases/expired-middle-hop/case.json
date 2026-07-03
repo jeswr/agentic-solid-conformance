@@ -1,0 +1,49 @@
+{
+  "clauses": [
+    "#verification (Phase D)",
+    "#sec-replay (policy-layer cut-off)"
+  ],
+  "expected": {
+    "authorized": false,
+    "code": "POLICY_DENIED",
+    "phase": "D"
+  },
+  "id": "agent-authz-credential/expired-middle-hop",
+  "input": {
+    "actor": "https://institute.example/agents/research#it",
+    "actorChain": {
+      "credentials": [
+        "institute-agent.vc.json"
+      ],
+      "policies": [
+        "institute-internal.ttl"
+      ]
+    },
+    "now": "2026-08-01T00:00:00.000Z",
+    "primaryChain": {
+      "credentials": [
+        "mandate.vc.json",
+        "agreement.vc.json"
+      ],
+      "policies": [
+        "mandate.ttl",
+        "agreement-past.ttl"
+      ]
+    },
+    "request": {
+      "action": "read",
+      "attributes": {
+        "dateTime": "2026-08-01T00:00:00.000Z",
+        "purpose": "https://w3id.org/dpv#ResearchAndDevelopment"
+      },
+      "target": "https://alice.solid.example/data/records.ttl"
+    },
+    "revoked": [],
+    "rootPrincipal": "https://alice.solid.example/profile/card#me"
+  },
+  "note": "The CREDENTIAL is still within its validity window (Phase A passes); the POLICY's own odrl:dateTime constraint has lapsed — the credential-validity ≠ authorization layering.",
+  "operation": "verify-agent-authority",
+  "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "EXPIRED MIDDLE HOP: a hop whose policy dateTime window passed → Phase D"
+}

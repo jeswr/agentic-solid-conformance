@@ -1,0 +1,47 @@
+{
+  "clauses": [
+    "#verification (Phase A: validity window)"
+  ],
+  "expected": {
+    "authorized": false,
+    "code": "NOT_YET_VALID",
+    "phase": "A"
+  },
+  "id": "agent-authz-credential/not-yet-valid",
+  "input": {
+    "actor": "https://institute.example/agents/research#it",
+    "actorChain": {
+      "credentials": [
+        "institute-agent.vc.json"
+      ],
+      "policies": [
+        "institute-internal.ttl"
+      ]
+    },
+    "now": "2026-01-01T00:00:00.000Z",
+    "primaryChain": {
+      "credentials": [
+        "mandate.vc.json",
+        "agreement.vc.json"
+      ],
+      "policies": [
+        "mandate.ttl",
+        "agreement.ttl"
+      ]
+    },
+    "request": {
+      "action": "read",
+      "attributes": {
+        "dateTime": "2026-01-01T00:00:00.000Z",
+        "purpose": "https://w3id.org/dpv#ResearchAndDevelopment"
+      },
+      "target": "https://alice.solid.example/data/records.ttl"
+    },
+    "revoked": [],
+    "rootPrincipal": "https://alice.solid.example/profile/card#me"
+  },
+  "operation": "verify-agent-authority",
+  "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "NOT YET VALID: now before validFrom → Phase A NOT_YET_VALID"
+}

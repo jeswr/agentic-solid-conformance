@@ -1,0 +1,38 @@
+{
+  "clauses": [
+    "#verification (Phase D, leaf-assignee rule)"
+  ],
+  "expected": {
+    "authorized": true,
+    "phase": "complete"
+  },
+  "id": "agent-authz-credential/actor-is-leaf-assignee",
+  "input": {
+    "actor": "https://institute.example/org#id",
+    "now": "2026-08-01T00:00:00.000Z",
+    "primaryChain": {
+      "credentials": [
+        "mandate.vc.json",
+        "agreement.vc.json"
+      ],
+      "policies": [
+        "mandate.ttl",
+        "agreement.ttl"
+      ]
+    },
+    "request": {
+      "action": "read",
+      "attributes": {
+        "dateTime": "2026-08-01T00:00:00.000Z",
+        "purpose": "https://w3id.org/dpv#ResearchAndDevelopment"
+      },
+      "target": "https://alice.solid.example/data/records.ttl"
+    },
+    "revoked": [],
+    "rootPrincipal": "https://alice.solid.example/profile/card#me"
+  },
+  "operation": "verify-agent-authority",
+  "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "HAPPY: the actor IS the leaf assignee — no second chain needed"
+}

@@ -1,0 +1,23 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/cid/v1"
+  ],
+  "assertionMethod": [
+    "https://alice.solid.example/keys#k1"
+  ],
+  "id": "https://alice.solid.example/profile/card#me",
+  "verificationMethod": [
+    {
+      "controller": "https://alice.solid.example/profile/card#me",
+      "id": "https://alice.solid.example/keys#k1",
+      "publicKeyJwk": {
+        "alg": "Ed25519",
+        "crv": "Ed25519",
+        "kty": "OKP",
+        "x": "8gfR-yCn3qf9TUfFzmTbBs5E7a1Cd7T8aeC6FkK6DdQ"
+      },
+      "publicKeyMultibase": "z6Mkvk3dBPprdEpYja5QQvU3W3JjbTdjPynS8ySYfiYCLMb9",
+      "type": "Multikey"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+@prefix odrl: <http://www.w3.org/ns/odrl/2/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix dpv: <https://w3id.org/dpv#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<https://alice.solid.example/agents/engagements/e1/agreement.ttl#policy> a odrl:Agreement;
+    odrl:uid <https://alice.solid.example/agents/engagements/e1/agreement.ttl#policy>;
+    odrl:profile <https://w3id.org/jeswr/odrl-delegation>;
+    odrl:assigner <https://agent-a.example/id#it>;
+    odrl:assignee <https://institute.example/org#id>;
+    <https://w3id.org/jeswr/odrl-delegation#delegatedUnder> <urn:not:present>;
+    odrl:permission _:n3-14.
+_:n3-14 odrl:assigner <https://agent-a.example/id#it>;
+    odrl:assignee <https://institute.example/org#id>;
+    odrl:action odrl:read;
+    odrl:target <https://alice.solid.example/data/records.ttl>;
+    odrl:constraint _:n3-15, _:n3-16;
+    odrl:duty _:n3-17.
+_:n3-15 odrl:leftOperand odrl:purpose;
+    odrl:operator odrl:eq;
+    odrl:rightOperand dpv:ResearchAndDevelopment.
+_:n3-16 odrl:leftOperand odrl:dateTime;
+    odrl:operator odrl:lteq;
+    odrl:rightOperand "2027-07-03T00:00:00Z"^^xsd:dateTime.
+_:n3-17 odrl:action odrl:delete.

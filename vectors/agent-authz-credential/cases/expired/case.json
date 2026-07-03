@@ -1,0 +1,48 @@
+{
+  "clauses": [
+    "#verification (Phase A: validity window)",
+    "#sec-replay (stale artifact)"
+  ],
+  "expected": {
+    "authorized": false,
+    "code": "EXPIRED",
+    "phase": "A"
+  },
+  "id": "agent-authz-credential/expired",
+  "input": {
+    "actor": "https://institute.example/agents/research#it",
+    "actorChain": {
+      "credentials": [
+        "institute-agent.vc.json"
+      ],
+      "policies": [
+        "institute-internal.ttl"
+      ]
+    },
+    "now": "2027-08-01T00:00:00.000Z",
+    "primaryChain": {
+      "credentials": [
+        "mandate.vc.json",
+        "agreement.vc.json"
+      ],
+      "policies": [
+        "mandate.ttl",
+        "agreement.ttl"
+      ]
+    },
+    "request": {
+      "action": "read",
+      "attributes": {
+        "dateTime": "2027-08-01T00:00:00.000Z",
+        "purpose": "https://w3id.org/dpv#ResearchAndDevelopment"
+      },
+      "target": "https://alice.solid.example/data/records.ttl"
+    },
+    "revoked": [],
+    "rootPrincipal": "https://alice.solid.example/profile/card#me"
+  },
+  "operation": "verify-agent-authority",
+  "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "EXPIRED: now after validUntil → Phase A EXPIRED (stale-artifact replay control)"
+}

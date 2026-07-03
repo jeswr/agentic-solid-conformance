@@ -1,0 +1,21 @@
+@prefix odrl: <http://www.w3.org/ns/odrl/2/>.
+@prefix acl: <http://www.w3.org/ns/auth/acl#>.
+@prefix dpv: <https://w3id.org/dpv#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<https://institute.example/policies/internal-e1.ttl#policy> a odrl:Agreement;
+    odrl:uid <https://institute.example/policies/internal-e1.ttl#policy>;
+    odrl:profile <https://w3id.org/jeswr/odrl-delegation>;
+    odrl:assigner <https://institute.example/org#id>;
+    odrl:permission _:n3-12.
+_:n3-12 odrl:assigner <https://institute.example/org#id>;
+    odrl:action odrl:read;
+    odrl:target <https://alice.solid.example/data/records.ttl>;
+    odrl:assignee <https://institute.example/agents/research#it>;
+    odrl:constraint _:n3-13.
+_:n3-13 odrl:leftOperand odrl:dateTime;
+    odrl:operator odrl:lteq;
+    odrl:rightOperand "2027-07-03T00:00:00Z"^^xsd:dateTime.

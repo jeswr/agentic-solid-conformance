@@ -1,0 +1,51 @@
+{
+  "clauses": [
+    "#verification (Phase C)",
+    "#revocation-verification (rule 2: statement → policy)"
+  ],
+  "expected": {
+    "authorized": false,
+    "code": "REVOKED",
+    "phase": "C"
+  },
+  "id": "agent-authz-credential/revoked",
+  "input": {
+    "actor": "https://institute.example/agents/research#it",
+    "actorChain": {
+      "credentials": [
+        "institute-agent.vc.json"
+      ],
+      "policies": [
+        "institute-internal.ttl"
+      ]
+    },
+    "now": "2026-08-01T00:00:00.000Z",
+    "primaryChain": {
+      "credentials": [
+        "mandate.vc.json",
+        "agreement.vc.json"
+      ],
+      "policies": [
+        "mandate.ttl",
+        "agreement.ttl"
+      ]
+    },
+    "request": {
+      "action": "read",
+      "attributes": {
+        "dateTime": "2026-08-01T00:00:00.000Z",
+        "purpose": "https://w3id.org/dpv#ResearchAndDevelopment"
+      },
+      "target": "https://alice.solid.example/data/records.ttl"
+    },
+    "revoked": [
+      "https://alice.solid.example/agents/engagements/e1/agreement.ttl#policy"
+    ],
+    "rootPrincipal": "https://alice.solid.example/profile/card#me"
+  },
+  "note": "revocation.ttl is the published odrld:Revocation statement; `revoked` is the set a caller derives from its odrld:revokedPolicy objects. The credential's OWN status list is clean — a policy-layer revocation alone MUST deny (the union rule; the Bitstring direction is pinned by the verify-credential-status cases).",
+  "operation": "verify-agent-authority",
+  "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "title": "REVOKED: a revoked chain hop (odrld:Revocation direction) → Phase C REVOKED"
+}

@@ -1,0 +1,134 @@
+{
+  "caseCount": 16,
+  "cases": [
+    {
+      "id": "agent-authz-credential/happy",
+      "path": "cases/happy/case.json"
+    },
+    {
+      "id": "agent-authz-credential/actor-is-leaf-assignee",
+      "path": "cases/actor-is-leaf-assignee/case.json"
+    },
+    {
+      "id": "agent-authz-credential/forged-hop",
+      "path": "cases/forged-hop/case.json"
+    },
+    {
+      "id": "agent-authz-credential/expired",
+      "path": "cases/expired/case.json"
+    },
+    {
+      "id": "agent-authz-credential/not-yet-valid",
+      "path": "cases/not-yet-valid/case.json"
+    },
+    {
+      "id": "agent-authz-credential/chain-malformed",
+      "path": "cases/chain-malformed/case.json"
+    },
+    {
+      "id": "agent-authz-credential/binding-mismatch",
+      "path": "cases/binding-mismatch/case.json"
+    },
+    {
+      "id": "agent-authz-credential/revoked",
+      "path": "cases/revoked/case.json"
+    },
+    {
+      "id": "agent-authz-credential/status-unreachable",
+      "path": "cases/status-unreachable/case.json"
+    },
+    {
+      "id": "agent-authz-credential/out-of-scope",
+      "path": "cases/out-of-scope/case.json"
+    },
+    {
+      "id": "agent-authz-credential/expired-middle-hop",
+      "path": "cases/expired-middle-hop/case.json"
+    },
+    {
+      "id": "agent-authz-credential/prohibition-laundering",
+      "path": "cases/prohibition-laundering/case.json"
+    },
+    {
+      "id": "agent-authz-credential/over-length",
+      "path": "cases/over-length/case.json"
+    },
+    {
+      "id": "agent-authz-credential/identity-composition-missing",
+      "path": "cases/identity-composition-missing/case.json"
+    },
+    {
+      "id": "agent-authz-credential/identity-composition-wrong-root",
+      "path": "cases/identity-composition-wrong-root/case.json"
+    },
+    {
+      "id": "agent-authz-credential/identity-composition-wrong-leaf",
+      "path": "cases/identity-composition-wrong-leaf/case.json"
+    }
+  ],
+  "clauseIndex": {
+    "#issuance": [
+      "agent-authz-credential/forged-hop"
+    ],
+    "#layering": [
+      "agent-authz-credential/happy",
+      "agent-authz-credential/out-of-scope"
+    ],
+    "#revocation-verification (rule 2: statement → policy)": [
+      "agent-authz-credential/revoked"
+    ],
+    "#sec-issuer-binding": [
+      "agent-authz-credential/binding-mismatch"
+    ],
+    "#sec-replay": [
+      "agent-authz-credential/identity-composition-wrong-root"
+    ],
+    "#sec-replay (policy-layer cut-off)": [
+      "agent-authz-credential/expired-middle-hop"
+    ],
+    "#sec-replay (stale artifact)": [
+      "agent-authz-credential/expired"
+    ],
+    "#sec-status-availability": [
+      "agent-authz-credential/status-unreachable"
+    ],
+    "#verification (Phase A: signature)": [
+      "agent-authz-credential/forged-hop"
+    ],
+    "#verification (Phase A: validity window)": [
+      "agent-authz-credential/expired",
+      "agent-authz-credential/not-yet-valid"
+    ],
+    "#verification (Phase B: cross-binding)": [
+      "agent-authz-credential/binding-mismatch"
+    ],
+    "#verification (Phase C)": [
+      "agent-authz-credential/revoked",
+      "agent-authz-credential/status-unreachable"
+    ],
+    "#verification (Phase D)": [
+      "agent-authz-credential/out-of-scope",
+      "agent-authz-credential/expired-middle-hop",
+      "agent-authz-credential/prohibition-laundering",
+      "agent-authz-credential/over-length"
+    ],
+    "#verification (Phase D, leaf-assignee rule)": [
+      "agent-authz-credential/actor-is-leaf-assignee"
+    ],
+    "#verification (Phase D: authenticated-agent rule)": [
+      "agent-authz-credential/identity-composition-missing",
+      "agent-authz-credential/identity-composition-wrong-root",
+      "agent-authz-credential/identity-composition-wrong-leaf"
+    ],
+    "#verification (all)": [
+      "agent-authz-credential/happy"
+    ],
+    "#verification (step 2: assemble the chain)": [
+      "agent-authz-credential/chain-malformed"
+    ]
+  },
+  "description": "verify-agent-authority vectors for Agent Authorization Credentials: the four-phase decision matrix (assembly, Phase A signature/validity, Phase B cross-binding, Phase C status∪revocation fail-closed, Phase D delegated-policy evaluation) plus the identity-composition rule. Signed eddsa-rdfc-2022 credentials; public keys in keyring/.",
+  "schemaVersion": 1,
+  "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "suite": "agent-authz-credential"
+}

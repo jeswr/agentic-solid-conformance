@@ -1,0 +1,27 @@
+{
+  "credentialSubject": {
+    "https://w3id.org/jeswr/solid-vc#action": [
+      "read",
+      "grantUse"
+    ],
+    "https://w3id.org/jeswr/solid-vc#authorizes": "https://agent-a.example/id#it",
+    "https://w3id.org/jeswr/solid-vc#policy": "https://alice.solid.example/agents/engagements/e1/mandate.ttl#policy",
+    "https://w3id.org/jeswr/solid-vc#target": "https://alice.solid.example/data/records.ttl",
+    "id": "https://alice.solid.example/profile/card#me"
+  },
+  "id": "urn:uuid:0cd18874-b44c-42f7-8ae8-8096d7547925",
+  "issuer": "https://alice.solid.example/profile/card#me",
+  "proof": {
+    "created": "2026-07-03T08:49:55.500Z",
+    "cryptosuite": "eddsa-rdfc-2022",
+    "proofPurpose": "assertionMethod",
+    "proofValue": "z56FhPf29c3Kxvb9ch4UXMPFS7XZjZTLNNQC54HyBnDDx7b6cLJoL2GtSYaNQHb3PuJmY6MTeXfwFdFDhLkUZQpMj",
+    "type": "DataIntegrityProof",
+    "verificationMethod": "https://alice.solid.example/keys#k1"
+  },
+  "type": [
+    "AgentAuthorizationCredential"
+  ],
+  "validFrom": "2026-07-03T00:00:00Z",
+  "validUntil": "2027-07-03T00:00:00Z"
+}

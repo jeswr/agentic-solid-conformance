@@ -1,0 +1,23 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/cid/v1"
+  ],
+  "assertionMethod": [
+    "https://agent-a.example/keys#k1"
+  ],
+  "id": "https://agent-a.example/id#it",
+  "verificationMethod": [
+    {
+      "controller": "https://agent-a.example/id#it",
+      "id": "https://agent-a.example/keys#k1",
+      "publicKeyJwk": {
+        "alg": "Ed25519",
+        "crv": "Ed25519",
+        "kty": "OKP",
+        "x": "OMoM0zH6nuOEgCcDQI_31cLPF762Z8vvFOV9MLQEFJg"
+      },
+      "publicKeyMultibase": "z6MkiGwa435zszsCtMfqB7RrbMvRhsZfcKVNFspgvwReM4Mu",
+      "type": "Multikey"
+    }
+  ]
+}
