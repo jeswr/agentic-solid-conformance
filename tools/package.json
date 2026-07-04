@@ -9,10 +9,10 @@
     "test": "node check/run-all.mjs"
   },
   "dependencies": {
-    "@jeswr/accountable-agent-runtime": "file:../../accountable-agent-runtime",
+    "@jeswr/accountable-agent-runtime": "git+https://github.com/jeswr/accountable-agent-runtime.git#ca29a389581e235f766b2e6e288efac77a1f1d0b",
     "@jeswr/fetch-rdf": "^0.1.0",
-    "@jeswr/solid-a2a": "file:../../solid-a2a",
-    "@jeswr/solid-odrl": "git+https://github.com/jeswr/solid-odrl.git#18df183564e86d144da1ee874706750f441d0c70",
+    "@jeswr/solid-a2a": "git+https://github.com/jeswr/solid-a2a.git#e5ff315c2c4c44eb1d83679c22da95696f3ba8b7",
+    "@jeswr/solid-odrl": "git+https://github.com/jeswr/solid-odrl.git#05849c6e248e1174b30a6222924d63929789c05a",
     "@jeswr/solid-vc": "git+https://github.com/jeswr/solid-vc.git#d6b4e3402041089f11b55c1b5ce42fc1c2f47c8a"
   }
 }

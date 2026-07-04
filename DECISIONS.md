@@ -21,9 +21,11 @@ fourth hand-authored opinion.
 
 The conformance contract is the `vectors/` tree alone: JSON case files + Turtle/JSON-LD
 documents + the README's abstract-operation definitions. `tools/` (generator + checker)
-depends on `@jeswr/accountable-agent-runtime`, which is a **local, unpublished sibling
-checkout** — so tools/ cannot be part of the contract even in principle. This is the
-"no @jeswr-code dependency" requirement made structural.
+depends on `@jeswr/accountable-agent-runtime`, `@jeswr/solid-a2a`, `@jeswr/solid-odrl`, and
+`@jeswr/solid-vc` — all now published `@jeswr` sibling repos, pinned by `tools/package.json`
+to a specific git SHA each — so tools/ cannot be part of the contract even in principle: it
+is pinned reference-implementation *tooling*, not a normative dependency the vectors carry.
+This is the "no @jeswr-code dependency" requirement made structural.
 
 ## D3 — Turtle as the normative policy form, verified by re-parse round-trip
 
