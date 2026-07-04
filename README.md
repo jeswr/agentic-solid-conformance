@@ -279,8 +279,9 @@ The repository's own gate does exactly this with the pinned reference implementa
 cd tools && npm install && npm test   # regenerates nothing; re-checks every case from disk
 ```
 
-`tools/` is local tooling (it depends on `@jeswr/accountable-agent-runtime`, a sibling
-checkout not yet published); the vectors themselves never require it.
+`tools/` is local tooling (it depends on `@jeswr/accountable-agent-runtime`, `@jeswr/solid-a2a`,
+`@jeswr/solid-odrl`, and `@jeswr/solid-vc`, all pinned to published git SHAs now that every
+sibling repo is publicly published); the vectors themselves never require it.
 
 ## Regenerating vectors
 
