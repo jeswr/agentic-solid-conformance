@@ -228,9 +228,20 @@ export const ops = {
     return { hash, canonical: canonical === want ? "canonical.nq" : "<canonicalization drift>" };
   },
 
-  /** A2A RDF extension §Content addressing — reject a body that misses its pin. */
+  /**
+   * A2A RDF extension §Content addressing — reject a body that misses its pin.
+   * `mediaType` (optional, default text/turtle) names the body's RDF serialization:
+   * the hash pins the parsed graph, so an rdf-1-faithful rendering in any advertised
+   * representation must verify identically (the LWS-composition pair).
+   */
   "verify-pd-pin": async (input, caseDir) => {
-    return { ok: await verifyProtocolDocument(doc(caseDir, input.body), input.pinnedHash) };
+    return {
+      ok: await verifyProtocolDocument(
+        doc(caseDir, input.body),
+        input.pinnedHash,
+        input.mediaType ?? "text/turtle",
+      ),
+    };
   },
 
   /** A2A RDF extension §Upgrade offer / §Upgrade response — strict payload decode. */

@@ -59,6 +59,23 @@ Legend for *why not*:
 | §Security considerations | SSRF-safe PD fetching, validation-cost bounds, untrusted-RDF hardening | network/resource behaviour — belongs to each implementation's security test surface (cf. `@jeswr/guarded-fetch`) |
 | §PD model | "a validator MUST NOT dereference IRIs mentioned in the shapes (no `owl:imports`-style loading)" | network — a data vector cannot observe the *absence* of a fetch; testable only with an instrumented network layer |
 
+## LWS composition — aligned behaviors homed elsewhere BY DESIGN (not gaps here)
+
+The JLWS alignment (`jeswr/lws-spec` DECISIONS.md D21; its
+`docs/alignment/conformance-vectors.md` fixes the homing rule) splits the composition
+vectors by system-under-test: a **pure agent-layer function** homes HERE (verdicts
+extracted from pinned reference implementations — this repo's methodology); the **JLWS
+server/AS surface** homes in `lws-spec/test-vectors/` (spec-derived verdicts — that
+suite's D20 methodology). The two provenance models never mix. Consequently:
+
+| Aligned behavior | Where it is vectored |
+|---|---|
+| RDF-transform opt-in **honored** at the hash layer (representation-stable pinning; a graph delta breaks the pin in any serialization) | **HERE** — `a2a-rdf/pd-hash-stable-across-representations` + `a2a-rdf/pd-hash-rejects-graph-change` (pure function over the reference codec) |
+| RDF-transform opt-in **advertised** (the `ContentNegotiation` capability + `conformsTo` in a storage description; 406-on-unparseable; per-representation ETags) | `lws-spec/test-vectors/` (`rdf-transform` + `discovery` suites) — server surface |
+| PoP over the LWS audience: accept/reject of DPoP/DPoP-SK presentation against the realm-audienced token (PRM shape, establishment, attestation accept/bad-sig/replay/expired) | `lws-spec/test-vectors/vectors/dpop-sk/` (8 cases specified in `lws-spec/docs/alignment/dpop-sk.md` §3) — server surface; only `channel_bindings: none` is deterministic, `tls-exporter` stays in that suite's GAPS.md |
+| a2a-rdf negotiation over LWS: the `AgentInteractionService` storage-description entry (parse + unknown-type forward-compatibility) | `lws-spec/test-vectors/vectors/discovery/` (`sd-agent-interaction-service`) — server surface |
+| a2a-rdf negotiation over LWS: the `A2A-Extensions` header exchange + the no-silent-downgrade rule under LWS auth | the negotiation/downgrade FUNCTION is already fully pinned HERE (`decode-handshake`, `may-downgrade-to-nl` — it is auth-scheme-independent: the hash, not the storage's token-presentation mode, is the trust anchor); the envelope half remains the standing **envelope** gap above |
+
 ## Deferred-but-vectorable follow-ups (extraction order)
 
 1. AAC presentation holder-binding rejections (`HOLDER_UNVERIFIED`) — same source file as the replay pair.

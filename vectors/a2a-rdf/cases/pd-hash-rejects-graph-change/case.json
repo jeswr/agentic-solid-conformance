@@ -1,0 +1,19 @@
+{
+  "clauses": [
+    "§Content addressing (recompute on fetch; the hash is the trust anchor)"
+  ],
+  "expected": {
+    "ok": false
+  },
+  "id": "a2a-rdf/pd-hash-rejects-graph-change",
+  "input": {
+    "body": "protocol-document-graph-change.jsonld",
+    "mediaType": "application/ld+json",
+    "pinnedHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509"
+  },
+  "note": "The fixture is the representation-stable JSON-LD PD plus exactly one added dcterms:description triple (asserted at generation time). Rejecting it proves the acceptance in pd-hash-stable-across-representations comes from graph identity, not from lenient JSON-LD handling.",
+  "operation": "verify-pd-pin",
+  "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "title": "verify-pd-pin: a JSON-LD rendering whose graph differs by ONE added triple MUST be rejected — content pins regardless of serialization"
+}

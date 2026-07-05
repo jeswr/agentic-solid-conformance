@@ -1,0 +1,19 @@
+{
+  "clauses": [
+    "§Content addressing (steps 1-3 — the hash pins the graph, not its serialization)"
+  ],
+  "expected": {
+    "ok": true
+  },
+  "id": "a2a-rdf/pd-hash-stable-across-representations",
+  "input": {
+    "body": "protocol-document.jsonld",
+    "mediaType": "application/ld+json",
+    "pinnedHash": "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509"
+  },
+  "note": "LWS composition (jeswr/lws-spec docs/alignment/a2a-rdf.md §3): under the JLWS RDF Content Transformation Profile's rdf-1 contract (rdf-transform.html §Transformation semantics — derived representations are graph-isomorphic) a PD stored as Turtle and served as JSON-LD pins identically, because the protocol hash is computed over the parsed graph. This fixture is asserted at generation time to canonicalize to the SAME RDFC-1.0 bytes as pd-hash-grant-access/canonical.nq; the Turtle half of the pair is pd-pin-match (same pinned hash).",
+  "operation": "verify-pd-pin",
+  "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
+  "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "title": "verify-pd-pin: the SAME PD graph as an rdf-1-faithful JSON-LD rendering matches the Turtle-derived pin (representation-stable pinning)"
+}

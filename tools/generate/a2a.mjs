@@ -6,7 +6,12 @@
 //   rdfc10-hash / verify-pd-pin — §Content addressing: the RDFC-1.0 canonical
 //     N-Quads → SHA-256 protocol hash of the spec's execution-verified
 //     grant-access Protocol Document example (sha256:4af1e70e…), plus the
-//     tampered-body rejection rule.
+//     tampered-body rejection rule, plus the LWS-composition
+//     representation-stability pair (jeswr/lws-spec docs/alignment/a2a-rdf.md §3):
+//     the hash pins the parsed GRAPH, not bytes, so an rdf-1-faithful JSON-LD
+//     rendering (JLWS RDF Content Transformation Profile: derived representations
+//     are graph-isomorphic) matches the Turtle-derived pin, and a one-triple graph
+//     delta breaks it in any serialization.
 //   decode-handshake — §Upgrade offer / §Upgrade response: strict payload
 //     validation (a malformed required/accept flag MUST be rejected, never
 //     coerced).
@@ -31,7 +36,7 @@ import {
 import { SuiteManifest, writeCase } from "../lib/emit.mjs";
 
 const SPEC = "https://w3id.org/jeswr/a2a-rdf/v1";
-const SOURCE = "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html";
+const SOURCE = "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html";
 // The spec's published example hash (§Agent Card declaration + §Upgrade offer).
 const EXPECTED_HASH = "sha256:4af1e70e42283872cbc0dd3a5eeaa1bd86adda728c993447bed8930d990ab509";
 const PD_SOURCE = "https://alice.pod.example/protocols/grant-access";
@@ -61,6 +66,78 @@ a2a:GrantIntentShape a sh:NodeShape;
 
 // A tampered copy (title changed) — same shape, different content, different hash.
 const PD_TAMPERED_TTL = PD_TTL.replace('"Grant access"', '"Grant access (tampered)"');
+
+// --- LWS-composition fixtures: the SAME PD graph as expanded JSON-LD -------------
+// An rdf-1-faithful rendering (JLWS RDF Content Transformation Profile,
+// rdf-transform.html §Transformation semantics: a derived representation encodes a
+// graph ISOMORPHIC to the authoritative one — no triples added, none removed).
+// Expanded form, context-free — deliberately: the rdf-1 contract's own
+// no-remote-context discipline. Authored as an alternative serialization of PD_TTL
+// (the same epistemic status as the hand-authored PD_TTL beside it) and
+// HARD-ASSERTED below to canonicalize to byte-identical RDFC-1.0 N-Quads, which is
+// what makes the pin representation-stable.
+const A2A_NS = "https://w3id.org/jeswr/a2a#";
+const SH_NS = "http://www.w3.org/ns/shacl#";
+const DCT_NS = "http://purl.org/dc/terms/";
+const propertyShape = (path, extra = {}) => ({
+  "@type": [`${SH_NS}PropertyShape`],
+  [`${SH_NS}path`]: [{ "@id": path }],
+  [`${SH_NS}minCount`]: [{ "@value": 1 }],
+  ...extra,
+});
+const PD_JSONLD_DOC = [
+  {
+    "@id": PD_SOURCE,
+    "@type": [`${A2A_NS}ProtocolDocument`],
+    [`${DCT_NS}title`]: [{ "@value": "Grant access" }],
+    [`${DCT_NS}hasVersion`]: [{ "@value": "1.0.0" }],
+    [`${A2A_NS}requestShape`]: [{ "@id": `${A2A_NS}GrantIntentShape` }],
+  },
+  {
+    "@id": `${A2A_NS}GrantIntentShape`,
+    "@type": [`${SH_NS}NodeShape`],
+    [`${SH_NS}targetClass`]: [{ "@id": `${A2A_NS}Intent` }],
+    [`${SH_NS}property`]: [
+      {
+        ...propertyShape(`${A2A_NS}action`),
+        [`${SH_NS}maxCount`]: [{ "@value": 1 }],
+        [`${SH_NS}name`]: [{ "@value": "action" }],
+        [`${SH_NS}node`]: [
+          {
+            "@type": [`${SH_NS}NodeShape`],
+            [`${SH_NS}property`]: [
+              propertyShape("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", {
+                [`${SH_NS}hasValue`]: [{ "@id": `${A2A_NS}GrantAction` }],
+              }),
+              propertyShape("https://schema.org/object", {
+                [`${SH_NS}name`]: [{ "@value": "target" }],
+                [`${SH_NS}nodeKind`]: [{ "@id": `${SH_NS}IRI` }],
+              }),
+              propertyShape("https://schema.org/recipient", {
+                [`${SH_NS}name`]: [{ "@value": "recipient" }],
+                [`${SH_NS}nodeKind`]: [{ "@id": `${SH_NS}IRI` }],
+              }),
+              propertyShape(`${A2A_NS}mode`, {
+                [`${SH_NS}name`]: [{ "@value": "mode" }],
+                [`${SH_NS}nodeKind`]: [{ "@id": `${SH_NS}IRI` }],
+              }),
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+const PD_JSONLD = `${JSON.stringify(PD_JSONLD_DOC, null, 2)}\n`;
+
+// A one-triple GRAPH delta of the same rendering: one added dcterms:description.
+// Everything else identical — rejecting this proves acceptance above comes from
+// graph identity, not lenient JSON-LD handling.
+const PD_JSONLD_GRAPH_CHANGE_DOC = structuredClone(PD_JSONLD_DOC);
+PD_JSONLD_GRAPH_CHANGE_DOC[0][`${DCT_NS}description`] = [
+  { "@value": "Grants a recipient access to a resource." },
+];
+const PD_JSONLD_GRAPH_CHANGE = `${JSON.stringify(PD_JSONLD_GRAPH_CHANGE_DOC, null, 2)}\n`;
 
 // The spec's §Message-content binding conforming intent example, verbatim.
 const INTENT_VALID_TTL = `@prefix a2a: <https://w3id.org/jeswr/a2a#>.
@@ -108,6 +185,32 @@ if (tamperedOk !== false) {
   console.error("tampered PD unexpectedly verified against the pin");
   process.exit(1);
 }
+// LWS-composition asserts: the JSON-LD rendering IS the same graph (byte-identical
+// RDFC-1.0 canonical form) and verifies against the Turtle-derived pin …
+const jsonldQuads = [...(await parseRdf(PD_JSONLD, "application/ld+json", {}))];
+if ((await canonicalNQuads(jsonldQuads)) !== canonical) {
+  console.error("PD_JSONLD is not graph-isomorphic to PD_TTL (canonical bytes differ)");
+  process.exit(1);
+}
+if ((await verifyProtocolDocument(PD_JSONLD, EXPECTED_HASH, "application/ld+json")) !== true) {
+  console.error("rdf-1-faithful JSON-LD rendering failed the pin");
+  process.exit(1);
+}
+// … and the graph-change fixture differs by EXACTLY one triple and fails the pin.
+const changedQuads = [...(await parseRdf(PD_JSONLD_GRAPH_CHANGE, "application/ld+json", {}))];
+if (changedQuads.length !== pdQuads.length + 1) {
+  console.error(
+    `graph-change fixture must differ by exactly one triple (got ${changedQuads.length} vs ${pdQuads.length})`,
+  );
+  process.exit(1);
+}
+if (
+  (await verifyProtocolDocument(PD_JSONLD_GRAPH_CHANGE, EXPECTED_HASH, "application/ld+json")) !==
+  false
+) {
+  console.error("graph-changed JSON-LD unexpectedly verified against the pin");
+  process.exit(1);
+}
 const validReport = await validateIntent(await quadsOf(INTENT_VALID_TTL), pdQuads);
 const invalidReport = await validateIntent(await quadsOf(INTENT_MISSING_MODE_TTL), pdQuads);
 if (validReport.conforms !== true || invalidReport.conforms !== false) {
@@ -149,6 +252,47 @@ const CASES = [
     docs: { "protocol-document-tampered.ttl": PD_TAMPERED_TTL },
     input: { body: "protocol-document-tampered.ttl", pinnedHash: EXPECTED_HASH },
     expected: { ok: false },
+  },
+  {
+    id: "pd-hash-stable-across-representations",
+    title:
+      "verify-pd-pin: the SAME PD graph as an rdf-1-faithful JSON-LD rendering matches the Turtle-derived pin (representation-stable pinning)",
+    clauses: ["§Content addressing (steps 1-3 — the hash pins the graph, not its serialization)"],
+    operation: "verify-pd-pin",
+    docs: { "protocol-document.jsonld": PD_JSONLD },
+    input: {
+      body: "protocol-document.jsonld",
+      mediaType: "application/ld+json",
+      pinnedHash: EXPECTED_HASH,
+    },
+    expected: { ok: true },
+    note:
+      "LWS composition (jeswr/lws-spec docs/alignment/a2a-rdf.md §3): under the JLWS RDF " +
+      "Content Transformation Profile's rdf-1 contract (rdf-transform.html §Transformation " +
+      "semantics — derived representations are graph-isomorphic) a PD stored as Turtle and " +
+      "served as JSON-LD pins identically, because the protocol hash is computed over the " +
+      "parsed graph. This fixture is asserted at generation time to canonicalize to the SAME " +
+      "RDFC-1.0 bytes as pd-hash-grant-access/canonical.nq; the Turtle half of the pair is " +
+      "pd-pin-match (same pinned hash).",
+  },
+  {
+    id: "pd-hash-rejects-graph-change",
+    title:
+      "verify-pd-pin: a JSON-LD rendering whose graph differs by ONE added triple MUST be rejected — content pins regardless of serialization",
+    clauses: ["§Content addressing (recompute on fetch; the hash is the trust anchor)"],
+    operation: "verify-pd-pin",
+    docs: { "protocol-document-graph-change.jsonld": PD_JSONLD_GRAPH_CHANGE },
+    input: {
+      body: "protocol-document-graph-change.jsonld",
+      mediaType: "application/ld+json",
+      pinnedHash: EXPECTED_HASH,
+    },
+    expected: { ok: false },
+    note:
+      "The fixture is the representation-stable JSON-LD PD plus exactly one added " +
+      "dcterms:description triple (asserted at generation time). Rejecting it proves the " +
+      "acceptance in pd-hash-stable-across-representations comes from graph identity, not " +
+      "from lenient JSON-LD handling.",
   },
   {
     id: "decode-offer-ok",
@@ -302,7 +446,7 @@ const manifest = new SuiteManifest({
   suite: "a2a-rdf",
   spec: SPEC,
   description:
-    "Vectors for the A2A RDF extension: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document (+ canonical N-Quads), pin verification accept/reject, strict handshake payload decoding, the full no-silent-downgrade decision table, and SHACL intent validation.",
+    "Vectors for the A2A RDF extension: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document (+ canonical N-Quads), pin verification accept/reject, representation-stable pinning across an rdf-1-faithful Turtle/JSON-LD pair (the LWS composition), strict handshake payload decoding, the full no-silent-downgrade decision table, and SHACL intent validation.",
 });
 for (const c of CASES) {
   const caseJson = {

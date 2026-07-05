@@ -11,7 +11,7 @@
     "shapesGraph": "protocol-document.ttl"
   },
   "operation": "validate-intent",
-  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
   "title": "validate-intent: an intent missing a2a:mode (sh:minCount 1) does NOT conform"
 }

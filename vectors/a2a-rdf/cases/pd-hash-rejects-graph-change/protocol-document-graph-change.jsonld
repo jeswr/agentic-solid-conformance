@@ -1,0 +1,170 @@
+[
+  {
+    "@id": "https://alice.pod.example/protocols/grant-access",
+    "@type": [
+      "https://w3id.org/jeswr/a2a#ProtocolDocument"
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@value": "Grant access"
+      }
+    ],
+    "http://purl.org/dc/terms/hasVersion": [
+      {
+        "@value": "1.0.0"
+      }
+    ],
+    "https://w3id.org/jeswr/a2a#requestShape": [
+      {
+        "@id": "https://w3id.org/jeswr/a2a#GrantIntentShape"
+      }
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@value": "Grants a recipient access to a resource."
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/jeswr/a2a#GrantIntentShape",
+    "@type": [
+      "http://www.w3.org/ns/shacl#NodeShape"
+    ],
+    "http://www.w3.org/ns/shacl#targetClass": [
+      {
+        "@id": "https://w3id.org/jeswr/a2a#Intent"
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property": [
+      {
+        "@type": [
+          "http://www.w3.org/ns/shacl#PropertyShape"
+        ],
+        "http://www.w3.org/ns/shacl#path": [
+          {
+            "@id": "https://w3id.org/jeswr/a2a#action"
+          }
+        ],
+        "http://www.w3.org/ns/shacl#minCount": [
+          {
+            "@value": 1
+          }
+        ],
+        "http://www.w3.org/ns/shacl#maxCount": [
+          {
+            "@value": 1
+          }
+        ],
+        "http://www.w3.org/ns/shacl#name": [
+          {
+            "@value": "action"
+          }
+        ],
+        "http://www.w3.org/ns/shacl#node": [
+          {
+            "@type": [
+              "http://www.w3.org/ns/shacl#NodeShape"
+            ],
+            "http://www.w3.org/ns/shacl#property": [
+              {
+                "@type": [
+                  "http://www.w3.org/ns/shacl#PropertyShape"
+                ],
+                "http://www.w3.org/ns/shacl#path": [
+                  {
+                    "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#minCount": [
+                  {
+                    "@value": 1
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#hasValue": [
+                  {
+                    "@id": "https://w3id.org/jeswr/a2a#GrantAction"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "http://www.w3.org/ns/shacl#PropertyShape"
+                ],
+                "http://www.w3.org/ns/shacl#path": [
+                  {
+                    "@id": "https://schema.org/object"
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#minCount": [
+                  {
+                    "@value": 1
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#name": [
+                  {
+                    "@value": "target"
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#nodeKind": [
+                  {
+                    "@id": "http://www.w3.org/ns/shacl#IRI"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "http://www.w3.org/ns/shacl#PropertyShape"
+                ],
+                "http://www.w3.org/ns/shacl#path": [
+                  {
+                    "@id": "https://schema.org/recipient"
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#minCount": [
+                  {
+                    "@value": 1
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#name": [
+                  {
+                    "@value": "recipient"
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#nodeKind": [
+                  {
+                    "@id": "http://www.w3.org/ns/shacl#IRI"
+                  }
+                ]
+              },
+              {
+                "@type": [
+                  "http://www.w3.org/ns/shacl#PropertyShape"
+                ],
+                "http://www.w3.org/ns/shacl#path": [
+                  {
+                    "@id": "https://w3id.org/jeswr/a2a#mode"
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#minCount": [
+                  {
+                    "@value": 1
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#name": [
+                  {
+                    "@value": "mode"
+                  }
+                ],
+                "http://www.w3.org/ns/shacl#nodeKind": [
+                  {
+                    "@id": "http://www.w3.org/ns/shacl#IRI"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

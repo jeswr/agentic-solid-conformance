@@ -1,5 +1,5 @@
 {
-  "caseCount": 14,
+  "caseCount": 16,
   "cases": [
     {
       "id": "a2a-rdf/pd-hash-grant-access",
@@ -12,6 +12,14 @@
     {
       "id": "a2a-rdf/pd-pin-mismatch",
       "path": "cases/pd-pin-mismatch/case.json"
+    },
+    {
+      "id": "a2a-rdf/pd-hash-stable-across-representations",
+      "path": "cases/pd-hash-stable-across-representations/case.json"
+    },
+    {
+      "id": "a2a-rdf/pd-hash-rejects-graph-change",
+      "path": "cases/pd-hash-rejects-graph-change/case.json"
     },
     {
       "id": "a2a-rdf/decode-offer-ok",
@@ -63,7 +71,11 @@
       "a2a-rdf/pd-pin-match"
     ],
     "§Content addressing (recompute on fetch; the hash is the trust anchor)": [
-      "a2a-rdf/pd-pin-mismatch"
+      "a2a-rdf/pd-pin-mismatch",
+      "a2a-rdf/pd-hash-rejects-graph-change"
+    ],
+    "§Content addressing (steps 1-3 — the hash pins the graph, not its serialization)": [
+      "a2a-rdf/pd-hash-stable-across-representations"
     ],
     "§Content addressing (steps 1-3)": [
       "a2a-rdf/pd-hash-grant-access"
@@ -100,7 +112,7 @@
       "a2a-rdf/decode-response-nonboolean-accept"
     ]
   },
-  "description": "Vectors for the A2A RDF extension: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document (+ canonical N-Quads), pin verification accept/reject, strict handshake payload decoding, the full no-silent-downgrade decision table, and SHACL intent validation.",
+  "description": "Vectors for the A2A RDF extension: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document (+ canonical N-Quads), pin verification accept/reject, representation-stable pinning across an rdf-1-faithful Turtle/JSON-LD pair (the LWS composition), strict handshake payload decoding, the full no-silent-downgrade decision table, and SHACL intent validation.",
   "schemaVersion": 1,
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
   "suite": "a2a-rdf"

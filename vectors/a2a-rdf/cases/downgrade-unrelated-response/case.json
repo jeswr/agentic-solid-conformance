@@ -21,7 +21,7 @@
     }
   },
   "operation": "may-downgrade-to-nl",
-  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
   "title": "no-silent-downgrade: a decline about a DIFFERENT protocolHash answers nothing → fail closed"
 }

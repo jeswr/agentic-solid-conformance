@@ -8,13 +8,13 @@ reproduce to claim conformance. This is the "make the second independent impleme
 measurable" artifact of the Accountable Web of Agents programme (unite `decisions/0001`;
 `accountable-agent-runtime` design).
 
-Three vector suites, one per spec — **56 cases**:
+Three vector suites, one per spec — **58 cases**:
 
 | Suite | Cases | Spec under test | Reference implementation the verdicts were extracted from |
 |---|---|---|---|
 | [`vectors/odrl-delegation/`](./vectors/odrl-delegation/) | 13 | [ODRL Agent-Delegation Profile](https://github.com/jeswr/solid-odrl) (`https://w3id.org/jeswr/odrl-delegation`) | `@jeswr/solid-odrl` `evaluateDelegated` @ `18df183` (branch `feat/delegation-profile`) |
 | [`vectors/agent-authz-credential/`](./vectors/agent-authz-credential/) | 29 | [Agent Authorization Credentials](https://github.com/jeswr/agent-authz-credential-spec) (unofficial CCG-shaped draft) | `@jeswr/accountable-agent-runtime` `verifyAgentAuthority` @ `0aadd46` (four-phase chain verifier) + `@jeswr/solid-vc` @ `d6b4e34` (branch `feat/mtr4-agent-authz-builder-followups`: status gate, policy binding, presentation verification) |
-| [`vectors/a2a-rdf/`](./vectors/a2a-rdf/) | 14 | [RDF Protocol Documents — an A2A Extension](https://github.com/jeswr/a2a-rdf-extension) (`https://w3id.org/jeswr/a2a-rdf/v1`) | `@jeswr/solid-a2a` @ `15ed62a` (0.2.0: RDFC-1.0 protocol hashing, handshake codec) |
+| [`vectors/a2a-rdf/`](./vectors/a2a-rdf/) | 16 | [RDF Protocol Documents — an A2A Extension](https://github.com/jeswr/a2a-rdf-extension) (`https://w3id.org/jeswr/a2a-rdf/v1`) | `@jeswr/solid-a2a` @ `e5ff315` (0.2.0: RDFC-1.0 protocol hashing, handshake codec) |
 
 Case inventory at a glance:
 
@@ -36,6 +36,10 @@ Case inventory at a glance:
 - **a2a-rdf**: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document
   (`rdfc10-hash`, reproducing the spec's published `sha256:4af1e70e…` with the canonical
   N-Quads shipped byte-exact), pin verification accept/tamper-reject (`verify-pd-pin`),
+  the **LWS-composition representation-stability pair**
+  (`pd-hash-stable-across-representations` / `pd-hash-rejects-graph-change`: the hash pins
+  the parsed graph, so an rdf-1-faithful JSON-LD rendering matches the Turtle-derived pin
+  and a one-triple graph delta breaks it — see [`docs/lws-alignment.md`](./docs/lws-alignment.md)),
   5 strict handshake-decode cases (`decode-handshake`), the 4-row no-silent-downgrade
   decision table (`may-downgrade-to-nl`), and SHACL intent validation accept/reject
   (`validate-intent`).
@@ -224,11 +228,15 @@ rdfc10-hash(graph) → { hash, canonical }
 ### 7. `verify-pd-pin` — A2A RDF extension §Content addressing (rejection rule)
 
 ```
-verify-pd-pin(body, pinnedHash) → { ok }
+verify-pd-pin(body, pinnedHash, mediaType?) → { ok }
 ```
 
-`ok` is true iff `rdfc10-hash(body).hash == pinnedHash`. A mismatch means the fetched
-Protocol Document MUST be rejected and the exchange treated as never upgraded.
+`ok` is true iff the RDFC-1.0/SHA-256 protocol hash of the graph parsed from `body`
+equals `pinnedHash`. `mediaType` (an `input` member; default `text/turtle`) names the
+body's RDF serialization — the hash pins the parsed graph, not bytes, so a faithful
+rendering in another representation verifies identically (the LWS-composition pair). A
+mismatch means the fetched Protocol Document MUST be rejected and the exchange treated as
+never upgraded.
 
 ### 8. `decode-handshake` — A2A RDF extension §Upgrade offer / §Upgrade response
 
@@ -309,5 +317,6 @@ suite" is never mistaken for "conforms to every MUST".
 ## Provenance
 
 Vectors extracted and consolidated by Claude Fable 5 (AI-assisted; maintainer-reviewed
-repo policy) from the pinned reference implementations named above, 2026-07-03. Design
+repo policy) from the pinned reference implementations named above, 2026-07-03; the
+LWS-composition pair on 2026-07-06. Design
 decisions: [`DECISIONS.md`](./DECISIONS.md). License: MIT.

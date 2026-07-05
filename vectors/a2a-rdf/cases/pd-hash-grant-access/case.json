@@ -12,7 +12,7 @@
   },
   "note": "expected.canonical names the byte-exact RDFC-1.0 canonical N-Quads file (LF line endings) so a failing implementation can localise the drift: wrong canonical bytes = the canonicalization step; right bytes + wrong hash = the digest/rendering step.",
   "operation": "rdfc10-hash",
-  "source": "@jeswr/solid-a2a@15ed62a (0.2.0); spec example: a2a-rdf-extension index.html",
+  "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
   "title": "RDFC-1.0 protocol hash of the grant-access Protocol Document (the spec example)"
 }

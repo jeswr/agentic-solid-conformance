@@ -97,3 +97,30 @@ codec, and vector in one step.
 Each spec's vectors landed as an independent commit (scaffold+delegation → AAC chain →
 AAC status/presentation → A2A → binding additions), so an interruption at any point leaves
 a coherent, gated repo. This mirrors the brief's interruption-resilience requirement.
+
+## D11 — LWS-composition vectors: only the pure-function half homes here
+
+Alignment with the JLWS clean-slate Linked Web Storage draft (`jeswr/lws-spec` DECISIONS.md
+D21; its `docs/alignment/conformance-vectors.md` fixes the homing rule this decision
+adopts). The rule: a vector homes by its **system under test** — pure agent-layer
+functions HERE (verdicts extracted from pinned reference implementations, D1), the JLWS
+server/AS surface in `lws-spec/test-vectors/` (spec-derived verdicts, that repo's D20).
+The two provenance models never mix inside one repo's suite. So this repo gains exactly
+the two pure-function composition cases (`a2a-rdf/pd-hash-stable-across-representations`,
+`a2a-rdf/pd-hash-rejects-graph-change` — the protocol hash pins the parsed graph, making
+the pin representation-stable under the rdf-1 transform contract and broken by a
+one-triple delta in any serialization), while the PoP-over-LWS-audience matrix, the
+RDF-transform advertisement surface, and the `AgentInteractionService` discovery parse
+home in lws-spec (GAPS.md's "LWS composition" table records each pointer). Mechanics: the
+`verify-pd-pin` operation gains an optional `mediaType` input member (default
+`text/turtle`) rather than a new operation — the abstract operation is unchanged (hash
+the parsed graph), only the fixture's serialization varies; the JSON-LD fixture is
+authored in expanded, context-free form (the rdf-1 contract's own no-remote-context
+discipline) and the generator HARD-ASSERTS it canonicalizes to byte-identical RDFC-1.0
+N-Quads before writing (an unfaithful rendering fails generation, so the fixture cannot
+drift from the Turtle original). The suite regen also re-extracted all a2a-rdf verdicts
+against the currently pinned codec sha (`e5ff315`, still 0.2.0), updating the stale
+`15ed62a` source strings. **Rejected:** homing spec-derived JLWS server-surface cases
+here (would mix provenance models and break D1's extraction guarantee); a separate
+`verify-pd-pin-jsonld` operation (the operation is serialization-agnostic by definition —
+a parameter, not a new contract).
