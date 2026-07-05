@@ -15,7 +15,7 @@
     "reference-implementations": [
       "solid-odrl@18df183 (feat/delegation-profile)",
       "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups)",
-      "solid-a2a@15ed62a (0.2.0)",
+      "solid-a2a@e5ff315 (0.2.0)",
       "accountable-agent-runtime@0aadd46 (local)"
     ]
   }

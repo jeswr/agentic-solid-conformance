@@ -62,12 +62,16 @@ Recorded as pointers in [`GAPS.md`](../GAPS.md) ("LWS composition" section):
   `lws-spec/test-vectors/` (`rdf-transform` + `discovery` suites).
 - **PoP over the LWS audience** (DPoP/DPoP-SK accept/reject against the realm-audienced
   token: PRM shape, establishment, attestation accept/bad-sig/replay/expired) — JLWS
-  server surface → `lws-spec/test-vectors/vectors/dpop-sk/` (8 cases specified in
-  `lws-spec/docs/alignment/dpop-sk.md` §3; only the `none` channel binding is
-  deterministic, `tls-exporter` stays in that suite's GAPS.md).
+  server surface → `lws-spec/test-vectors/`, as a **planned** `vectors/dpop-sk/` suite
+  (8 cases specified in `lws-spec/docs/alignment/dpop-sk.md` §3, riding the
+  implementation increment; until it lands the deferral is that repo's GAPS.md
+  `core#rs-validation` row; only the `none` channel binding is deterministic,
+  `tls-exporter` stays in that GAPS.md permanently).
 - **a2a-rdf discovery over LWS** (the `AgentInteractionService` storage-description entry
   parse + unknown-type forward-compatibility) — JLWS server surface →
-  `lws-spec/test-vectors/vectors/discovery/` (`sd-agent-interaction-service`).
+  `lws-spec/test-vectors/vectors/discovery/`; the `sd-agent-interaction-service` case is
+  **specified, not yet landed** (it rides the config-gated storage-description entry,
+  `lws-spec/docs/alignment/a2a-rdf.md` §3–§4).
 - **a2a-rdf negotiation under LWS auth** — no new function to vector: the
   `A2A-Extensions`/handshake negotiation and the fail-closed no-silent-downgrade rule are
   auth-scheme-independent (the hash, not the storage's token-presentation mode, is the

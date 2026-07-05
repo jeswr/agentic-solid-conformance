@@ -19,9 +19,9 @@
 //   validate-intent — §Message-content binding: SHACL validation of intent
 //     graphs against the PD's request shape.
 //
-// Verdicts extracted by executing @jeswr/solid-a2a@15ed62a (0.2.0 — the
-// RDFC-1.0-aligned codec); the PD hash is additionally hard-asserted against the
-// spec's published example value.
+// Verdicts extracted by executing @jeswr/solid-a2a@e5ff315 (0.2.0 — the
+// RDFC-1.0-aligned codec; = the SOURCE constant and tools/package.json pin); the
+// PD hash is additionally hard-asserted against the spec's published example value.
 
 import { parseRdf } from "@jeswr/fetch-rdf";
 import {
