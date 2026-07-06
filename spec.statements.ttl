@@ -1,0 +1,251 @@
+# AUTHORED-BY Claude Fable 5
+#
+# Machine-readable normative-statement companion for agentic-solid-conformance
+# (https://github.com/jeswr/agentic-solid-conformance). COMPLEMENTARY: the full-text
+# suite documentation (README.md + GAPS.md + docs/) is the normative source and is
+# unchanged; this graph enumerates the suite's OWN normative statements so tooling
+# (certification schemes, the interop map, coverage gates) can consume them.
+#
+# This spec is the META-SPEC of the family: it defines the conformance framework
+# itself (the conformance-claim contract and the abstract-operation input contracts),
+# so its statements are the meta-rules of the vector suite — wired, where applicable,
+# to the suite's own vector cases via spec:testCase.
+#
+# Model: the Solid Protocol's requirement markup (http://www.w3.org/ns/spec#) as a
+# sidecar graph, + the certification testability spine (E / A-int / A-exist / P), +
+# honest per-statement test-gap accounting (format: jeswr/spec-companion). Statement
+# texts are VERBATIM quotes of the spec source (validator-enforced against the pinned
+# README.md — whitespace collapsed).
+
+@base <https://raw.githubusercontent.com/jeswr/agentic-solid-conformance/main/spec.statements.ttl> .
+@prefix sc:      <https://w3id.org/jeswr/spec-companion#> .
+@prefix spec:    <http://www.w3.org/ns/spec#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# The companion document
+#################################################################
+
+<> a sc:CompanionDocument ;
+    dcterms:title "agentic-solid-conformance normative-statement companion"@en ;
+    sc:companionOf <https://github.com/jeswr/agentic-solid-conformance/> ;
+    sc:specVersion "9e236696242201e4214947d46a98903178a020c8" ;
+    dcterms:created "2026-07-06"^^xsd:date ;
+    prov:wasAttributedTo <https://jeswr.org/#me> ;
+    dcterms:description "Extracted with AI assistance (Claude Fable 5, Anthropic) from the pinned suite documentation; awaiting review by the human editor, like the suite itself. SCOPE: this companion enumerates only the suite's OWN meta-requirements — the conformance-claim contract and the abstract-operation input contracts. The normative requirements OF the three covered specs that GAPS.md quotes in its tables home in those specs' own companions, not here."@en ;
+    sc:extractionNote "The code-mapping duty inside the conformance sentence ('fields the implementation does not emit natively must be derivable — … must publish a total mapping onto the vector codes and apply it consistently') and its restatements (operation 2: 'An implementation with its own code vocabulary must map it totally onto these.'; Running-the-suite step 4: 'deep equality after your documented code-mapping') use lowercase 'must' (RFC 8174 reserves normative force to the UPPERCASE forms); the duty is captured here as ASC-CONF-2 via the sentence's uppercase MUST. Errata candidate: uppercase the mapping duty." ;
+    sc:extractionNote "'An implementation must actually PARSE the revocation statements — the cases that ship one keep the literal array empty.' (operation 1, revoked-set input) uses lowercase 'must' with mandatory intent; the obligation is exercised by the revoked-deny case, whose literal revoked array is deliberately empty. Errata candidate: give it a BCP 14 MUST." ;
+    sc:extractionNote "'`rootPrincipal`: the trusted root principal the root credential's issuer must equal (Phase B)' (operation 2 options) uses lowercase 'must'; the obligation is pinned by the binding-mismatch case. Errata candidate: give it a BCP 14 MUST." ;
+    sc:extractionNote "Operation 9's no-silent-downgrade rule ('downgrade is true only when response.protocolHash == offer.protocolHash AND offer.required == false AND response.accept == false. Every other combination … yields false.') is definitional prose with no BCP 14 keyword, though it is fully pinned by the four may-downgrade-to-nl cases. Errata candidate: state it as a MUST." ;
+    sc:extractionNote "'so credential bytes and the keyring change; the verdicts must not.' (Regenerating vectors) uses lowercase 'must not' with mandatory intent; the invariant is mechanically enforced by the suite's own consistency gate ('The checker gates that invariant.'). Errata candidate: BCP 14 MUST NOT." ;
+    sc:extractionNote "'Never hand-edit generated fixtures.' (Regenerating vectors) is an unkeyworded imperative with MUST NOT intent, addressed to suite maintainers/contributors; only its verdict-changing subset is mechanically caught by the consistency checker. Errata candidate: BCP 14 keyword." ;
+    sc:extractionNote "GAPS.md's central honesty caveat ('Passing the vector suite is therefore necessary but not sufficient for full conformance — an implementation must still satisfy these by review/testing of its own.') uses lowercase 'must' and names no mechanical check; it bounds what a vector-suite pass may be claimed to mean. Errata candidate: uppercase it and mirror it in the README conformance clause." ;
+    sc:extractionNote "The homing rule ('The two provenance models never mix inside one repo's suites — …', docs/lws-alignment.md, adopted as DECISIONS.md D11) is stated with 'never', not a BCP 14 keyword; it is a suite-governance duty auditable against each case's source provenance field. Errata candidate if the rule is intended as a normative MUST NOT." ;
+    sc:extractionNote "The suite has no dedicated Security Considerations section; the security-relevant coverage lives in DECISIONS.md D4 (public-only keyring: 'a conformance repo must never ship private signing keys') and the README's Regenerating-vectors key discipline — D4 is declared as this companion's spec:SecurityConsiderations node. Errata candidate: add an explicit Security considerations section." .
+
+#################################################################
+# The specification (the suite's normative documentation)
+#################################################################
+
+<https://github.com/jeswr/agentic-solid-conformance/> a spec:Specification ;
+    dcterms:title "agentic-solid-conformance: shared conformance test vectors for the agentic-accountability specifications"@en ;
+    spec:conformance <https://github.com/jeswr/agentic-solid-conformance#vector-schema> ;
+    spec:consideration
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/DECISIONS.md#d4--public-only-keyring-as-controller-documents-fresh-keys-per-generation> ,
+        <https://github.com/jeswr/agentic-solid-conformance#normative-statements-with-no-deterministic-vector-honest-gaps> ;
+    spec:requirement
+        <#ASC-CONF-1> , <#ASC-CONF-2> ,
+        <#ASC-ODRL-1> ,
+        <#ASC-AAC-1> , <#ASC-AAC-2> ,
+        <#ASC-DOCMAP-1> ,
+        <#ASC-REPLAY-1> ,
+        <#ASC-POLICY-1> ,
+        <#ASC-PDPIN-1> , <#ASC-PDPIN-2> ,
+        <#ASC-HS-1> .
+
+<https://github.com/jeswr/agentic-solid-conformance/blob/main/DECISIONS.md#d4--public-only-keyring-as-controller-documents-fresh-keys-per-generation>
+    a spec:SecurityConsiderations ;
+    rdfs:comment "The suite's security posture: fixture keys are regenerated per run, only public halves are committed ('a conformance repo must never ship private signing keys: someone WILL copy fixtures into production trust stores'). Declared here because the suite has no dedicated Security Considerations section (see the companion's extraction notes)."@en .
+
+#################################################################
+# Conformance classes
+#################################################################
+
+<#DelegationEvaluator> a sc:ConformanceClass ;
+    rdfs:label "ODRL Agent-Delegation Profile implementation under test (delegated-chain evaluator)"@en ;
+    sc:definedBy <https://github.com/jeswr/agentic-solid-conformance#1-evaluate-delegated-chain--odrl-agent-delegation-profile-57> .
+
+<#AacVerifier> a sc:ConformanceClass ;
+    rdfs:label "Agent Authorization Credentials implementation under test (four-phase chain verifier; also the status / replay / policy-binding gates of operations 3-5)"@en ;
+    sc:definedBy <https://github.com/jeswr/agentic-solid-conformance#2-verify-agent-authority--agent-authorization-credentials-verification> .
+
+<#A2aRdfImplementation> a sc:ConformanceClass ;
+    rdfs:label "A2A RDF extension implementation under test (Protocol-Document consumer / handshake endpoint; the implementer of operations 6-10)"@en ;
+    sc:definedBy <https://github.com/jeswr/agentic-solid-conformance#6-rdfc10-hash--a2a-rdf-extension-content-addressing> .
+
+#################################################################
+# Test gaps (honest partial-coverage justifications)
+#################################################################
+
+<#gap-depth-injection-direct> a sc:TestGap ;
+    dcterms:description "The depth cases exercise the reserved-operand injection only implicitly (correct depth arithmetic is observable only when the evaluator injects the true remaining depth); a DIRECT vector carrying a hostile caller-asserted attributes.delegationDepth is vectorable but deferred — GAPS.md, ODRL table §4.1 row, and item 5 of the deferred-but-vectorable extraction order."@en .
+
+#################################################################
+# Normative statements
+#
+# Per statement: stable id, verbatim quote (validator-checked against the pinned
+# README.md), canonical RFC 2119 level, actor binding, testability tag, anchor, and
+# test-case link (this suite's own vector cases — the meta-spec's statements are
+# wired to their own vectors) or honest gap. rdfs:comment carries context where a
+# quote is a sentence fragment or carries multiple obligations.
+#################################################################
+
+### The conformance-claim contract (#vector-schema)
+
+<#ASC-CONF-1> a spec:Requirement ;
+    dcterms:identifier "ASC-CONF-1" ;
+    spec:statement "A **conforming implementation** of a spec MUST, for every case in that spec's manifest, produce a result equal to `expected` (field-by-field; fields the implementation does not emit natively must be derivable — e.g. an implementation with different error-code strings must publish a total mapping onto the vector codes and apply it consistently)." ;
+    rdfs:comment "The umbrella conformance claim; operative clause: 'MUST, for every case in that spec's manifest, produce a result equal to expected (field-by-field)'. The obligation quantifies over EVERY case listed in the relevant suite's manifest.json (58 cases across the three suites at the pinned version) — the linked cases are one representative per suite, not the extent. Restated by the README intro ('…an independent implementation must reproduce to claim conformance') and Running-the-suite step 5 ('Conformance to a spec = all of that suite's cases pass.')."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#DelegationEvaluator> , <#AacVerifier> , <#A2aRdfImplementation> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#vector-schema> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/odrl-delegation/cases/valid-1hop/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/happy/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/a2a-rdf/cases/pd-pin-match/case.json> .
+
+<#ASC-CONF-2> a spec:Requirement ;
+    dcterms:identifier "ASC-CONF-2" ;
+    spec:statement "A **conforming implementation** of a spec MUST, for every case in that spec's manifest, produce a result equal to `expected` (field-by-field; fields the implementation does not emit natively must be derivable — e.g. an implementation with different error-code strings must publish a total mapping onto the vector codes and apply it consistently)." ;
+    rdfs:comment "Same sentence as ASC-CONF-1; this record's operative sub-clause is the derivability/mapping duty: 'fields the implementation does not emit natively must be derivable — … must publish a total mapping onto the vector codes and apply it consistently' (lowercase 'must' in the source — see the companion's extraction notes). The PUBLISHED total code-mapping is an artifact an auditor can check for existence and totality; its consistent application is then exercised by the vector run itself (ASC-CONF-1)."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#DelegationEvaluator> , <#AacVerifier> , <#A2aRdfImplementation> ;
+    sc:testability sc:AccountableExistence ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#vector-schema> .
+
+### Operation 1: evaluate-delegated-chain input contract
+
+<#ASC-ODRL-1> a spec:Requirement ;
+    dcterms:identifier "ASC-ODRL-1" ;
+    spec:statement "the evaluator MUST inject the true remaining depth for `odrld:delegationDepth`, ignoring caller-asserted values — profile §4.1" ;
+    rdfs:comment "The reserved-operand injection rule of the request-context input (restating ODRL Agent-Delegation Profile §4.1 as this suite's operation contract; the source requirement homes in the profile's own companion). The depth cases pin the injection implicitly — correct depth arithmetic is only observable when the true remaining depth is injected; the direct hostile-caller vector is the linked gap."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#DelegationEvaluator> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#1-evaluate-delegated-chain--odrl-agent-delegation-profile-57> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/odrl-delegation/cases/depth-exceeded-default-deny/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/odrl-delegation/cases/depth-exceeded-explicit-deny/case.json> ;
+    sc:testGap <#gap-depth-injection-direct> .
+
+### Operation 2: verify-agent-authority input contract
+
+<#ASC-AAC-1> a spec:Requirement ;
+    dcterms:identifier "ASC-AAC-1" ;
+    spec:statement "a conforming verifier MUST fail closed (Phase C `STATUS_RETRIEVAL_ERROR`)" ;
+    rdfs:comment "Condition: the status source could not be retrieved (the `statusUnreachable` operation input models this). Restates AAC #sec-status-availability's fail-closed rule as the semantics of the operation input; the isolated status gate's unreachable case (operation 3) pins the same behaviour."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#AacVerifier> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#2-verify-agent-authority--agent-authorization-credentials-verification> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/status-unreachable/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/status-list-unreachable/case.json> .
+
+<#ASC-AAC-2> a spec:Requirement ;
+    dcterms:identifier "ASC-AAC-2" ;
+    spec:statement "when `actor` ≠ the leaf assignee, a valid second chain from the leaf assignee to `actor` is REQUIRED" ;
+    rdfs:comment "The identity-composition rule ('holding a chain is not authority — being the delegate it names is'). REQUIRED is the RFC 8174 synonym of MUST (canonicalized per the strict profile). All three rejection variants are pinned (missing second chain, wrong root, wrong leaf), plus the actor-is-leaf-assignee accept case needing no second chain."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#AacVerifier> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#2-verify-agent-authority--agent-authorization-credentials-verification> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/identity-composition-missing/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/identity-composition-wrong-root/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/identity-composition-wrong-leaf/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/actor-is-leaf-assignee/case.json> .
+
+### Operations 3 and 5: the documents-map network stand-in
+
+<#ASC-DOCMAP-1> a spec:Requirement ;
+    dcterms:identifier "ASC-DOCMAP-1" ;
+    spec:statement "Implementations MUST NOT fetch anything outside this map." ;
+    rdfs:comment "'This map' = the `documents` URL → file map standing in for the network (operation 3; operation 5's `documents` input is defined 'as in operation 3'). A data vector cannot observe the ABSENCE of a network fetch (a negative internal — the same reasoning GAPS.md applies to the a2a-rdf no-dereference rule), so this is audit-only under the suite's own format; it becomes black-box testable only under an instrumented/sandboxed network layer, which the suite does not mandate for consumers."@en ;
+    spec:requirementLevel spec:MUSTNOT ;
+    spec:requirementSubject <#AacVerifier> ;
+    sc:testability sc:AccountableExistence ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#3-verify-credential-status--aac-revocation-bitstring-direction> .
+
+### Operation 4: verify-presentation-replay
+
+<#ASC-REPLAY-1> a spec:Requirement ;
+    dcterms:identifier "ASC-REPLAY-1" ;
+    spec:statement "a Verifiable Presentation is bound to a `challenge`/`domain`; verification with the wrong expectation MUST fail." ;
+    rdfs:comment "The stolen-presentation replay control. The section's input bullet restates the same obligation ('a proof bound to anything else is a replay and MUST fail.') — one statement, not two. Both mismatch dimensions plus the correctly-bound accept control are pinned."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#AacVerifier> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#4-verify-presentation-replay--aac-presentations--sec-replay> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/presentation-challenge-mismatch/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/presentation-domain-mismatch/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/presentation-challenge-ok/case.json> .
+
+### Operation 5: resolve-bound-policy rejection rules
+
+<#ASC-POLICY-1> a spec:Requirement ;
+    dcterms:identifier "ASC-POLICY-1" ;
+    spec:statement "a bare digest-less reference, a digest mismatch, and an unreachable policy document MUST all be rejected" ;
+    rdfs:comment "One sentence, one level, three independently-pinned rejection conditions (POLICY_INTEGRITY): bare digest-less IRI, digest mismatch (with the matching-digest accept as positive control), and unreachable policy document (fail-closed on retrieval failure)."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#AacVerifier> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#5-resolve-bound-policy--aac-policy-content-binding--verification-step-1> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/binding-bare-iri-reject/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/binding-digest-mismatch-reject/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/binding-unreachable-reject/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/agent-authz-credential/cases/binding-digest-match-accept/case.json> .
+
+### Operation 7: verify-pd-pin rejection rule
+
+<#ASC-PDPIN-1> a spec:Requirement ;
+    dcterms:identifier "ASC-PDPIN-1" ;
+    spec:statement "A mismatch means the fetched Protocol Document MUST be rejected and the exchange treated as never upgraded." ;
+    rdfs:comment "This record's operative sub-clause: 'the fetched Protocol Document MUST be rejected'. Pinned by the tampered-body reject and by the one-triple graph delta in another serialization (the LWS-composition pair proves the pin is over the parsed graph, not bytes). The second obligation in the same sentence is ASC-PDPIN-2."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#A2aRdfImplementation> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#7-verify-pd-pin--a2a-rdf-extension-content-addressing-rejection-rule> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/a2a-rdf/cases/pd-pin-mismatch/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/a2a-rdf/cases/pd-hash-rejects-graph-change/case.json> .
+
+<#ASC-PDPIN-2> a spec:Requirement ;
+    dcterms:identifier "ASC-PDPIN-2" ;
+    spec:statement "A mismatch means the fetched Protocol Document MUST be rejected and the exchange treated as never upgraded." ;
+    rdfs:comment "Same sentence as ASC-PDPIN-1; this record's operative sub-clause: 'and the exchange treated as never upgraded'. The vector observes only the { ok } decision output; the exchange-state consequence is downstream behaviour outside the operation's interface (GAPS.md's 'behavioural emission' category) — auditable by inspecting the consumer's exchange-state handling, hence A-exist under this suite's format rather than E."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#A2aRdfImplementation> ;
+    sc:testability sc:AccountableExistence ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#7-verify-pd-pin--a2a-rdf-extension-content-addressing-rejection-rule> .
+
+### Operation 8: decode-handshake strict rejection
+
+<#ASC-HS-1> a spec:Requirement ;
+    dcterms:identifier "ASC-HS-1" ;
+    spec:statement "a `required` or `accept` member that is missing-where-required or not a JSON boolean MUST be rejected, never coerced" ;
+    rdfs:comment "The strict-decode rule guarding the no-silent-downgrade property (malformed-flag coercion would silently weaken it). All three malformed variants are pinned; a coercing decoder flips the observed ok verdict."@en ;
+    spec:requirementLevel spec:MUST ;
+    spec:requirementSubject <#A2aRdfImplementation> ;
+    sc:testability sc:Enforceable ;
+    sc:anchor <https://github.com/jeswr/agentic-solid-conformance#8-decode-handshake--a2a-rdf-extension-upgrade-offer--upgrade-response> ;
+    spec:testCase
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/a2a-rdf/cases/decode-offer-malformed-required/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/a2a-rdf/cases/decode-response-missing-accept/case.json> ,
+        <https://github.com/jeswr/agentic-solid-conformance/blob/main/vectors/a2a-rdf/cases/decode-response-nonboolean-accept/case.json> .
