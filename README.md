@@ -80,13 +80,24 @@ vectors/<suite>/
   "id": "odrl-delegation/valid-1hop",     // unique within the repo
   "title": "valid 1-hop chain → permit",
   "spec": "https://w3id.org/jeswr/odrl-delegation",
-  "clauses": ["§5.1", "§5.2", "§6"],      // the normative clauses this vector pins
+  "clauses": ["§5.1", "§5.2", "§6"],      // the normative clauses this vector pins (section strings)
+  "statements": ["AAC-VER-1"],            // OPTIONAL: stable spec-companion statement ids (see below)
   "operation": "evaluate-delegated-chain", // an abstract operation defined below
   "input": { /* operation-specific; file refs are relative to the case dir */ },
   "expected": { /* operation-specific */ },
   "source": "solid-odrl@18df183 test/characterization.test.ts"  // where the verdict was extracted
 }
 ```
+
+The optional **`statements`** array pins the case to the stable statement ids of the
+spec's [machine-readable companion](https://github.com/jeswr/spec-companion)
+(`spec.statements.ttl`), migrating away from the brittle `clauses` section strings
+(spec-companion DESIGN §7). It is present only for suites whose spec has a landed
+companion (today: `a2a-rdf` → `jeswr/a2a-rdf-extension`, `agent-authz-credential` →
+`jeswr/agent-authz-credential-spec`); `clauses` is kept alongside it during the
+transition. The ids are derived — and kept bidirectionally consistent — with the
+companion's own `spec:testCase` links; a case a companion does not yet pin carries no
+`statements` field (never an empty one). See **Traceability** below.
 
 A **conforming implementation** of a spec MUST, for every case in that spec's manifest,
 produce a result equal to `expected` (field-by-field; fields the implementation does not
@@ -301,11 +312,26 @@ Regeneration re-signs the credential fixtures with **fresh keys** (keys are gene
 run and only public halves are committed), so credential bytes and the keyring change; the
 verdicts must not. The checker gates that invariant. Never hand-edit generated fixtures.
 
+The final `generate` step (`node generate/statement-ids.mjs`, also `npm run
+generate:statement-ids`) refreshes the companion `statements`/`statementIndex` from the
+sibling spec-companion checkouts (default: repos beside this one; override with
+`$SPEC_COMPANION_ROOT`). It is a **maintenance** step — the committed vectors are
+self-describing, and the base gate (`npm test`) validates their statement-id consistency
+without needing any companion (`node check/statement-ids.mjs`).
+
 ## Traceability
 
 Each case's `clauses` field pins the normative statements it tests; the per-suite
 `manifest.json` carries a `clauseIndex` (clause → case ids) so you can see at a glance
 which MUSTs are vector-covered — and the honest inverse is below.
+
+Where a spec has a landed machine-readable companion, cases additionally carry stable
+**`statements`** ids and the manifest a **`statementIndex`** (statement id → case ids) +
+**`statementCompanion`** provenance (the companion IRI and its `sc:specVersion` pin). These
+are derived from — and kept an exact inverse of — the companion's own `spec:testCase`
+links, so the two artifacts cannot silently drift: `check/statement-ids.mjs` fails on any
+asymmetry. This is the machine-readable successor to the `clauses` strings
+(spec-companion DESIGN §7); both are kept during the transition.
 
 ## Normative statements with NO deterministic vector (honest gaps)
 

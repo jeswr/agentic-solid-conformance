@@ -115,5 +115,61 @@
   "description": "Vectors for the A2A RDF extension: the RDFC-1.0 protocol hash of the spec's grant-access Protocol Document (+ canonical N-Quads), pin verification accept/reject, representation-stable pinning across an rdf-1-faithful Turtle/JSON-LD pair (the LWS composition), strict handshake payload decoding, the full no-silent-downgrade decision table, and SHACL intent validation.",
   "schemaVersion": 1,
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "statementCompanion": {
+    "companion": "https://jeswr.github.io/a2a-rdf-extension/",
+    "note": "statement ids derived from the companion's spec:testCase links; the case-level `statements` field is additive to `clauses` during the transition (jeswr/spec-companion DESIGN §7).",
+    "repo": "jeswr/a2a-rdf-extension",
+    "source": "jeswr/a2a-rdf-extension/spec.statements.ttl",
+    "specVersion": "d3a2773ae15e3dcce332081eec894e1cd83df6f9"
+  },
+  "statementIndex": {
+    "A2ARDF-DG-1": [
+      "a2a-rdf/downgrade-accepted",
+      "a2a-rdf/downgrade-allowed-optional",
+      "a2a-rdf/downgrade-refused-required",
+      "a2a-rdf/downgrade-unrelated-response"
+    ],
+    "A2ARDF-HASH-1": [
+      "a2a-rdf/pd-hash-grant-access",
+      "a2a-rdf/pd-hash-stable-across-representations",
+      "a2a-rdf/pd-pin-match"
+    ],
+    "A2ARDF-HASH-2": [
+      "a2a-rdf/pd-hash-rejects-graph-change",
+      "a2a-rdf/pd-pin-mismatch"
+    ],
+    "A2ARDF-OFFER-3": [
+      "a2a-rdf/decode-offer-malformed-required",
+      "a2a-rdf/decode-offer-ok"
+    ],
+    "A2ARDF-OFFER-4": [
+      "a2a-rdf/decode-offer-malformed-required"
+    ],
+    "A2ARDF-PP-3": [
+      "a2a-rdf/intent-missing-mode",
+      "a2a-rdf/intent-valid"
+    ],
+    "A2ARDF-PP-5": [
+      "a2a-rdf/intent-missing-mode",
+      "a2a-rdf/intent-valid"
+    ],
+    "A2ARDF-PP-6": [
+      "a2a-rdf/intent-missing-mode"
+    ],
+    "A2ARDF-RESP-1": [
+      "a2a-rdf/downgrade-unrelated-response"
+    ],
+    "A2ARDF-RESP-2": [
+      "a2a-rdf/decode-response-missing-accept",
+      "a2a-rdf/decode-response-nonboolean-accept",
+      "a2a-rdf/decode-response-ok"
+    ],
+    "A2ARDF-RESP-3": [
+      "a2a-rdf/decode-response-missing-accept"
+    ],
+    "A2ARDF-SEC-6": [
+      "a2a-rdf/downgrade-refused-required"
+    ]
+  },
   "suite": "a2a-rdf"
 }

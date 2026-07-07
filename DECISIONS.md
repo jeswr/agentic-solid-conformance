@@ -124,3 +124,42 @@ against the currently pinned codec sha (`e5ff315`, still 0.2.0), updating the st
 here (would mix provenance models and break D1's extraction guarantee); a separate
 `verify-pd-pin-jsonld` operation (the operation is serialization-agnostic by definition —
 a parameter, not a new contract).
+
+## D12 — Companion statement ids are the migrated form of `clauses`; derived, not hand-mapped
+
+The vectors originally pinned normative statements by section string (`case.json.clauses`
++ manifest `clauseIndex` — e.g. `"§5.1"`, `"#verification (Phase D)"`). Those strings are
+brittle: a spec re-headline silently breaks the pin. The
+[spec-companion](https://github.com/jeswr/spec-companion) project (DESIGN §7) gives each
+spec's normative statements **stable ids** (`AAC-VER-1`, `A2ARDF-DG-1`, …) in a sidecar
+`spec.statements.ttl`, and asks this suite to migrate the clause pins to those ids as an
+**additive** field, keeping both during the transition.
+
+**Decision.** For every suite whose spec has a landed companion (`a2a-rdf`,
+`agent-authz-credential`; `odrl-delegation` has none yet, so it is untouched), each case
+gains a `statements` array and each manifest a `statementIndex` (+ a `statementCompanion`
+provenance block pinning the companion IRI and its `sc:specVersion`). Crucially, the ids
+are **not hand-mapped from the clause strings** — they are the inverse of the companion's
+own `spec:testCase` links (the companion author already decided, per statement, which
+vector cases exercise it). `tools/generate/statement-ids.mjs` reads the companion with the
+sanctioned parser (`@jeswr/fetch-rdf`, no bespoke RDF parser) and writes the fields;
+`tools/check/statement-ids.mjs` (in the base gate) re-derives the index from the committed
+cases and fails on any asymmetry, so the two artifacts are provably one bidirectional
+relation. This mirrors D1's ethos — the mapping is *extracted* from an authoritative
+source, never a fresh hand-authored opinion — and keeps the vectors self-describing (the
+check needs no companion at consume time; only regeneration reads the sibling repos).
+
+**Rejected:** hand-mapping each `clauses` string to a statement id (re-encodes the
+author's reading, the exact failure D1 avoids); replacing `clauses` outright (breaks
+readers mid-transition; DESIGN §7 says keep both); vendoring a copy of each companion into
+this repo (reintroduces the cross-repo drift spec-companion DESIGN §6 eliminates — the
+companion in the spec's own repo stays the single source of truth).
+
+**Discovered gap (follow-up, not a defect here).** The bidirectional check surfaced that
+the `agent-authz-credential-spec` companion pins `identity-composition-missing` and
+`identity-composition-wrong-leaf` to `AAC-VER-5` (the leaf-assignee rule) but does **not**
+pin the sibling `identity-composition-wrong-root`, whose clause is the identical
+`#verification (Phase D: authenticated-agent rule)`. That case is therefore left with no
+`statements` field (honest — this suite never invents a companion link). The fix belongs
+in the companion: add `vec:identity-composition-wrong-root` to `AAC-VER-5`'s `spec:testCase`
+in `jeswr/agent-authz-credential-spec`; a later regen here then picks it up automatically.

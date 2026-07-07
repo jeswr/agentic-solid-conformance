@@ -16,5 +16,9 @@
   "operation": "resolve-bound-policy",
   "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/policy-binding.test.ts",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-BIND-1",
+    "AAC-BIND-2"
+  ],
   "title": "policy binding: an EMBEDDED policy graph (signed inline) is accepted"
 }

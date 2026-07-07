@@ -21,5 +21,8 @@
   "operation": "resolve-bound-policy",
   "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/policy-binding.test.ts",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-BIND-4"
+  ],
   "title": "policy binding: an unreachable policy document (404) MUST be rejected (fail closed)"
 }

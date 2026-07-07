@@ -19,5 +19,8 @@
   "operation": "verify-presentation-replay",
   "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/presentation.test.ts",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-PRES-2"
+  ],
   "title": "Presentation bound to a DIFFERENT relying party's domain → deny DOMAIN_MISMATCH"
 }

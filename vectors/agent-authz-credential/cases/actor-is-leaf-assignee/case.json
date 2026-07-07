@@ -34,5 +34,9 @@
   "operation": "verify-agent-authority",
   "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-VER-5",
+    "AAC-VER-6"
+  ],
   "title": "HAPPY: the actor IS the leaf assignee — no second chain needed"
 }

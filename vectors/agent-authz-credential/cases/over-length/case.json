@@ -44,5 +44,8 @@
   "operation": "verify-agent-authority",
   "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-VER-1"
+  ],
   "title": "OVER LENGTH: chain longer than the verifier's maxChainLength → Phase D"
 }

@@ -44,5 +44,9 @@
   "operation": "verify-agent-authority",
   "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-LAYER-1",
+    "AAC-VER-1"
+  ],
   "title": "OUT OF SCOPE: the actual use falls outside the granted purpose → Phase D"
 }
