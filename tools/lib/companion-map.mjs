@@ -13,30 +13,38 @@
 import { readFileSync } from "node:fs";
 import { parseRdf } from "@jeswr/fetch-rdf";
 import { STATEMENT_ID_RE } from "./statement-id.mjs";
+import { SUITE_COMPANIONS } from "./companions.mjs";
 
 const SPEC = "http://www.w3.org/ns/spec#";
 const DCT = "http://purl.org/dc/terms/";
 const SC = "https://w3id.org/jeswr/spec-companion#";
 
-export { STATEMENT_ID_RE };
+export { STATEMENT_ID_RE, SUITE_COMPANIONS };
 
 /**
- * Parse a companion Turtle file and return:
+ * Parse an already-loaded companion Turtle STRING (the testable core of
+ * loadCompanionMap). Returns:
  *   { companionOf, specVersion,
  *     caseToStatements: Map<caseSlug, Set<statementId>>,
  *     statementToCases: Map<statementId, Set<caseSlug>>,
  *     statementIds: Set<statementId> }
- * where caseSlug is the vector case slug (the directory name, e.g. "happy" or
- * "pd-pin-match") as pinned by the companion's `spec:testCase` IRIs, and
- * statementId is the statement's `dcterms:identifier` literal.
  *
- * @param {string} file  path to the companion `spec.statements.ttl`
- * @param {string} expectedSuite  the vector suite the companion's cases must live
- *   under (e.g. "a2a-rdf"); a `spec:testCase` IRI pointing at any other suite is a
- *   hard error (guards a mis-wired companion from cross-contaminating suites).
+ * Fidelity guards (the migration derives an EXACT inverse of `spec:testCase`, so
+ * anything that would silently drop a link is a hard error):
+ *   • required provenance — `sc:companionOf` and `sc:specVersion` MUST be present
+ *     (the generator records them, and a companion without them is malformed);
+ *   • a subject carrying `spec:testCase` links MUST also carry a `dcterms:identifier`
+ *     — otherwise its test-case links would be silently ignored and the inverse map
+ *     would miss them;
+ *   • statement ids match the id pattern; every `spec:testCase` IRI resolves to a
+ *     case under `expectedSuite` (a foreign suite is a mis-wired companion).
+ *
+ * @param {string} ttl  the companion Turtle text
+ * @param {string} expectedSuite  the vector suite the companion's cases live under
+ * @param {string} source  a label for error messages (the file path, usually)
  */
-export async function loadCompanionMap(file, expectedSuite) {
-  const quads = [...(await parseRdf(readFileSync(file, "utf8"), "text/turtle", {}))];
+export async function parseCompanionTtl(ttl, expectedSuite, source = "<companion>") {
+  const quads = [...(await parseRdf(ttl, "text/turtle", {}))];
 
   // subject -> { id, testCases:Set<IRI> }
   const bySubject = new Map();
@@ -56,22 +64,34 @@ export async function loadCompanionMap(file, expectedSuite) {
     else if (p === SC + "specVersion") specVersion = q.object.value;
   }
 
+  if (!companionOf) throw new Error(`${source}: companion has no sc:companionOf`);
+  if (!specVersion) throw new Error(`${source}: companion has no sc:specVersion`);
+
   const caseToStatements = new Map();
   const statementToCases = new Map();
   const statementIds = new Set();
 
-  for (const { id, testCases } of bySubject.values()) {
-    if (!id) continue;
-    if (!STATEMENT_ID_RE.test(id)) throw new Error(`${file}: bad statement id "${id}"`);
+  for (const [subject, { id, testCases }] of bySubject) {
+    if (!id) {
+      // A subject with spec:testCase links but no stable id would be silently
+      // dropped — that breaks the exact-inverse fidelity the migration relies on.
+      if (testCases.size > 0) {
+        throw new Error(
+          `${source}: subject <${subject}> has ${testCases.size} spec:testCase link(s) but no dcterms:identifier`,
+        );
+      }
+      continue;
+    }
+    if (!STATEMENT_ID_RE.test(id)) throw new Error(`${source}: bad statement id "${id}"`);
     statementIds.add(id);
     for (const tc of testCases) {
       // .../vectors/<suite>/cases/<slug>[/]
       const m = tc.match(/\/vectors\/([^/]+)\/cases\/([^/]+)\/?$/);
-      if (!m) throw new Error(`${file}: unparseable spec:testCase IRI "${tc}" (statement ${id})`);
+      if (!m) throw new Error(`${source}: unparseable spec:testCase IRI "${tc}" (statement ${id})`);
       const [, suite, slug] = m;
       if (suite !== expectedSuite) {
         throw new Error(
-          `${file}: statement ${id} pins case in suite "${suite}", expected "${expectedSuite}"`,
+          `${source}: statement ${id} pins case in suite "${suite}", expected "${expectedSuite}"`,
         );
       }
       if (!caseToStatements.has(slug)) caseToStatements.set(slug, new Set());
@@ -85,16 +105,12 @@ export async function loadCompanionMap(file, expectedSuite) {
 }
 
 /**
- * The suite -> companion binding for the migration. Companion files live in each
- * spec's OWN repo (jeswr/spec-companion DESIGN §6); by default we read the sibling
- * checkouts under the shared repo root, overridable with $SPEC_COMPANION_ROOT.
- * A suite absent here (e.g. odrl-delegation, whose spec has no companion yet) is
- * intentionally NOT migrated — its cases keep `clauses` only.
+ * Parse a companion `spec.statements.ttl` file. Thin wrapper over
+ * {@link parseCompanionTtl} that reads the file first.
+ *
+ * @param {string} file  path to the companion `spec.statements.ttl`
+ * @param {string} expectedSuite  the vector suite the companion's cases live under
  */
-export const SUITE_COMPANIONS = {
-  "a2a-rdf": { repo: "jeswr/a2a-rdf-extension", dir: "a2a-rdf-extension" },
-  "agent-authz-credential": {
-    repo: "jeswr/agent-authz-credential-spec",
-    dir: "agent-authz-credential-spec",
-  },
-};
+export async function loadCompanionMap(file, expectedSuite) {
+  return parseCompanionTtl(readFileSync(file, "utf8"), expectedSuite, file);
+}

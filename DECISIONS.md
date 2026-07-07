@@ -145,9 +145,17 @@ vector cases exercise it). `tools/generate/statement-ids.mjs` reads the companio
 sanctioned parser (`@jeswr/fetch-rdf`, no bespoke RDF parser) and writes the fields;
 `tools/check/statement-ids.mjs` (in the base gate) re-derives the index from the committed
 cases and fails on any asymmetry, so the two artifacts are provably one bidirectional
-relation. This mirrors D1's ethos — the mapping is *extracted* from an authoritative
-source, never a fresh hand-authored opinion — and keeps the vectors self-describing (the
-check needs no companion at consume time; only regeneration reads the sibling repos).
+relation. The check is **fail-closed**: a companion-backed suite (declared in
+`tools/lib/companions.mjs` `SUITE_COMPANIONS`) MUST carry `statementIndex` +
+`statementCompanion` — deleting the migration metadata is a gate FAILURE, not a silent
+skip; only suites explicitly declared to have no companion (`NO_COMPANION_SUITES`, today
+`odrl-delegation`) may legitimately omit it, and an undeclared suite without metadata also
+fails. This mirrors D1's ethos — the mapping is *extracted* from an authoritative source,
+never a fresh hand-authored opinion — and keeps the vectors self-describing (the check
+needs no companion at consume time; only regeneration reads the sibling repos). Regression
+tests: `tools/test/statement-ids.test.mjs` (gutted-manifest → checker fails; a companion
+subject with `spec:testCase` links but no `dcterms:identifier` → parse throws, preserving
+exact-inverse fidelity).
 
 **Rejected:** hand-mapping each `clauses` string to a statement id (re-encodes the
 author's reading, the exact failure D1 avoids); replacing `clauses` outright (breaks
