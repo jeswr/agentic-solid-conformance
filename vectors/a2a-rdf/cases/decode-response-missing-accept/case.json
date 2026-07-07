@@ -15,5 +15,9 @@
   "operation": "decode-handshake",
   "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "statements": [
+    "A2ARDF-RESP-2",
+    "A2ARDF-RESP-3"
+  ],
   "title": "decode-handshake: a response with NO accept member MUST be rejected (it MUST NOT default to false)"
 }

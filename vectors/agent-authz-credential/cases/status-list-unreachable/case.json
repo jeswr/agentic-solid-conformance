@@ -22,5 +22,8 @@
   "operation": "verify-credential-status",
   "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/status-list.test.ts",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-VER-1"
+  ],
   "title": "Bitstring status: the status list cannot be retrieved (404) → fail-closed deny"
 }

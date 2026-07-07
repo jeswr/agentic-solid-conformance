@@ -18,5 +18,9 @@
   "operation": "decode-handshake",
   "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "statements": [
+    "A2ARDF-OFFER-3",
+    "A2ARDF-OFFER-4"
+  ],
   "title": "decode-handshake: an offer whose required is a STRING MUST be rejected (never coerced)"
 }

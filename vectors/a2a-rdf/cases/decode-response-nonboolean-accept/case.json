@@ -16,5 +16,8 @@
   "operation": "decode-handshake",
   "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "statements": [
+    "A2ARDF-RESP-2"
+  ],
   "title": "decode-handshake: a response whose accept is a STRING MUST be rejected"
 }

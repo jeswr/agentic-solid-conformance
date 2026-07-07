@@ -15,5 +15,8 @@
   "operation": "verify-pd-pin",
   "source": "@jeswr/solid-a2a@e5ff315 (0.2.0); spec example: a2a-rdf-extension index.html",
   "spec": "https://w3id.org/jeswr/a2a-rdf/v1",
+  "statements": [
+    "A2ARDF-HASH-2"
+  ],
   "title": "verify-pd-pin: a JSON-LD rendering whose graph differs by ONE added triple MUST be rejected — content pins regardless of serialization"
 }

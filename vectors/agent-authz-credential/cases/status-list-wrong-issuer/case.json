@@ -20,5 +20,8 @@
   "operation": "verify-credential-status",
   "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/status-list.test.ts",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-ISS-11"
+  ],
   "title": "Bitstring status: the status list is signed by a DIFFERENT issuer than the hop → fail-closed deny"
 }

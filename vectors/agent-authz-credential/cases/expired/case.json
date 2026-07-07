@@ -44,5 +44,9 @@
   "operation": "verify-agent-authority",
   "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-VAL-4",
+    "AAC-VER-1"
+  ],
   "title": "EXPIRED: now after validUntil → Phase A EXPIRED (stale-artifact replay control)"
 }

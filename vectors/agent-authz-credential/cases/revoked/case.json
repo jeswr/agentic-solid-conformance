@@ -48,5 +48,10 @@
   "operation": "verify-agent-authority",
   "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-RVER-2",
+    "AAC-VER-1",
+    "AAC-VER-4"
+  ],
   "title": "REVOKED: a revoked chain hop (odrld:Revocation direction) → Phase C REVOKED"
 }

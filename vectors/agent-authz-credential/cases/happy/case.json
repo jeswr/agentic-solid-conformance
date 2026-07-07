@@ -43,5 +43,10 @@
   "operation": "verify-agent-authority",
   "source": "accountable-agent-runtime@0aadd46 test/decision-matrix.test.ts (+ __snapshots__/decision-matrix.test.ts.snap)",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-HOP-3",
+    "AAC-ISS-6",
+    "AAC-VER-1"
+  ],
   "title": "HAPPY: the valid two-hop chain + identity-composition actor chain permits"
 }

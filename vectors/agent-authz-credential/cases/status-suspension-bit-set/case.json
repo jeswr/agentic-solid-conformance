@@ -19,5 +19,8 @@
   "operation": "verify-credential-status",
   "source": "solid-vc@d6b4e34 (feat/mtr4-agent-authz-builder-followups) test/status-list.test.ts",
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statements": [
+    "AAC-RVER-1"
+  ],
   "title": "Bitstring status: suspension bit SET → deny SUSPENDED (distinct, reversible purpose)"
 }

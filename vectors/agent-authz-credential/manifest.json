@@ -233,5 +233,98 @@
   "description": "verify-agent-authority vectors for Agent Authorization Credentials: the four-phase decision matrix (assembly, Phase A signature/validity, Phase B cross-binding, Phase C status∪revocation fail-closed, Phase D delegated-policy evaluation) plus the identity-composition rule. Signed eddsa-rdfc-2022 credentials; public keys in keyring/.",
   "schemaVersion": 1,
   "spec": "https://github.com/jeswr/agent-authz-credential-spec",
+  "statementCompanion": {
+    "companion": "https://jeswr.github.io/agent-authz-credential-spec/",
+    "note": "statement ids derived from the companion's spec:testCase links; the case-level `statements` field is additive to `clauses` during the transition (jeswr/spec-companion DESIGN §7).",
+    "repo": "jeswr/agent-authz-credential-spec",
+    "source": "jeswr/agent-authz-credential-spec/spec.statements.ttl",
+    "specVersion": "4896be7692fd5cd94e95e998bf281d867c0e9f72"
+  },
+  "statementIndex": {
+    "AAC-BIND-1": [
+      "agent-authz-credential/binding-bare-iri-reject",
+      "agent-authz-credential/binding-digest-match-accept",
+      "agent-authz-credential/binding-embedded-accept"
+    ],
+    "AAC-BIND-2": [
+      "agent-authz-credential/binding-embedded-accept"
+    ],
+    "AAC-BIND-4": [
+      "agent-authz-credential/binding-digest-match-accept",
+      "agent-authz-credential/binding-digest-mismatch-reject",
+      "agent-authz-credential/binding-unreachable-reject"
+    ],
+    "AAC-BIND-7": [
+      "agent-authz-credential/binding-bare-iri-reject"
+    ],
+    "AAC-HOP-1": [
+      "agent-authz-credential/chain-malformed"
+    ],
+    "AAC-HOP-3": [
+      "agent-authz-credential/happy"
+    ],
+    "AAC-ISS-1": [
+      "agent-authz-credential/forged-hop"
+    ],
+    "AAC-ISS-11": [
+      "agent-authz-credential/status-list-wrong-issuer"
+    ],
+    "AAC-ISS-6": [
+      "agent-authz-credential/happy"
+    ],
+    "AAC-LAYER-1": [
+      "agent-authz-credential/forged-hop",
+      "agent-authz-credential/out-of-scope"
+    ],
+    "AAC-PRES-2": [
+      "agent-authz-credential/presentation-challenge-mismatch",
+      "agent-authz-credential/presentation-challenge-ok",
+      "agent-authz-credential/presentation-domain-mismatch"
+    ],
+    "AAC-RVER-1": [
+      "agent-authz-credential/status-bit-clear-accept",
+      "agent-authz-credential/status-bit-set-revoked",
+      "agent-authz-credential/status-suspension-bit-set"
+    ],
+    "AAC-RVER-2": [
+      "agent-authz-credential/revoked"
+    ],
+    "AAC-VAL-4": [
+      "agent-authz-credential/expired"
+    ],
+    "AAC-VER-1": [
+      "agent-authz-credential/binding-mismatch",
+      "agent-authz-credential/chain-malformed",
+      "agent-authz-credential/expired",
+      "agent-authz-credential/expired-middle-hop",
+      "agent-authz-credential/forged-hop",
+      "agent-authz-credential/happy",
+      "agent-authz-credential/not-yet-valid",
+      "agent-authz-credential/out-of-scope",
+      "agent-authz-credential/over-length",
+      "agent-authz-credential/prohibition-laundering",
+      "agent-authz-credential/revoked",
+      "agent-authz-credential/status-list-unreachable",
+      "agent-authz-credential/status-unreachable"
+    ],
+    "AAC-VER-2": [
+      "agent-authz-credential/chain-malformed"
+    ],
+    "AAC-VER-4": [
+      "agent-authz-credential/revoked"
+    ],
+    "AAC-VER-5": [
+      "agent-authz-credential/actor-is-leaf-assignee",
+      "agent-authz-credential/identity-composition-missing",
+      "agent-authz-credential/identity-composition-wrong-leaf"
+    ],
+    "AAC-VER-6": [
+      "agent-authz-credential/actor-is-leaf-assignee",
+      "agent-authz-credential/identity-composition-missing"
+    ],
+    "AAC-VER-7": [
+      "agent-authz-credential/forged-hop"
+    ]
+  },
   "suite": "agent-authz-credential"
 }
